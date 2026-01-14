@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { GitCompare, Loader2, Swords } from "lucide-react";
+import { Users, Hammer, Loader2, Flame, Snowflake, Swords } from "lucide-react";
+import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,49 +15,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { REGION_OPTIONS, getYearOptions } from "@/lib/utils";
-import { isCompareEnabled } from "@/lib/constants";
-import type { StartCompareResponse, RiotRegion } from "@/lib/types";
+import type { RiotRegion, StartCompareResponse } from "@/lib/types";
+
+interface PlayerInputs {
+  gameName: string;
+  tagLine: string;
+  region: RiotRegion;
+}
 
 export default function ComparePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Player 1
-  const [gameName1, setGameName1] = useState("");
-  const [tagLine1, setTagLine1] = useState("");
-  const [region1, setRegion1] = useState<RiotRegion>("na1");
-
-  // Player 2
-  const [gameName2, setGameName2] = useState("");
-  const [tagLine2, setTagLine2] = useState("");
-  const [region2, setRegion2] = useState<RiotRegion>("na1");
-
-  // Shared
   const [year, setYear] = useState(new Date().getFullYear());
 
-  const yearOptions = getYearOptions();
+  const [player1, setPlayer1] = useState<PlayerInputs>({
+    gameName: "",
+    tagLine: "",
+    region: "na1",
+  });
 
-  if (!isCompareEnabled()) {
-    return (
-      <div className="min-h-screen bg-rift">
-        <div className="absolute inset-0 bg-hextech opacity-30" />
-        <div className="container relative py-12">
-          <div className="text-center">
-            <div className="flex h-16 w-16 mx-auto items-center justify-center rounded border-2 border-lol-gold/30 bg-lol-darker mb-4">
-              <GitCompare className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h1 className="text-2xl font-bold text-lol-gold mb-2">Coming Soon</h1>
-            <p className="text-muted-foreground">
-              The compare feature is currently disabled. Check back later!
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const [player2, setPlayer2] = useState<PlayerInputs>({
+    gameName: "",
+    tagLine: "",
+    region: "na1",
+  });
+
+  const yearOptions = getYearOptions();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,8 +54,16 @@ export default function ComparePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          player1: { gameName: gameName1, tagLine: tagLine1, region: region1 },
-          player2: { gameName: gameName2, tagLine: tagLine2, region: region2 },
+          player1: {
+            gameName: player1.gameName,
+            tagLine: player1.tagLine,
+            region: player1.region,
+          },
+          player2: {
+            gameName: player2.gameName,
+            tagLine: player2.tagLine,
+            region: player2.region,
+          },
           year,
         }),
       });
@@ -77,7 +71,9 @@ export default function ComparePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || data.error || "Failed to start comparison");
+        throw new Error(
+          data.message || data.error || "Failed to start comparison"
+        );
       }
 
       const result = data as StartCompareResponse;
@@ -91,107 +87,127 @@ export default function ComparePage() {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)]">
-      {/* Background */}
-      <div className="absolute inset-0 bg-rift" />
-      <div className="absolute inset-0 bg-hextech opacity-30" />
+    <Layout>
+      <div className="relative min-h-[calc(100vh-8rem)] overflow-hidden">
+        {/* Freljord background */}
+        <div className="absolute inset-0 bg-freljord" />
+        <div className="absolute inset-0 bg-mountains" />
+        <div className="absolute inset-0 bg-ice opacity-30" />
+        
+        {/* Decorative glows */}
+        <div className="absolute top-20 left-20 w-64 h-64 bg-frost-blue/10 rounded-full blur-[80px]" />
+        <div className="absolute bottom-40 right-20 w-96 h-96 bg-forge-ember/10 rounded-full blur-[100px]" />
 
-      <div className="container relative z-10 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <div className="flex justify-center mb-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded border-2 border-lol-gold bg-lol-darker">
-              <Swords className="h-8 w-8 text-lol-gold" />
+        <div className="container relative z-10 py-12 md:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-auto max-w-4xl"
+          >
+            {/* Header */}
+            <div className="text-center mb-10">
+              <div className="flex justify-center mb-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-forge-ember/20 blur-2xl rounded-full" />
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-lg border-2 border-forge-ember/60 bg-gradient-to-b from-mountain-stone to-mountain-dark">
+                    <Swords className="h-8 w-8 text-forge-ember" />
+                  </div>
+                </div>
+              </div>
+              <h1 className="text-4xl font-display font-bold mb-3">
+                <span className="text-forge-ember">Trial by</span>{" "}
+                <span className="text-frost-light">Combat</span>
+              </h1>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                Pit two champions against each other in Ornn's forge. Let the
+                flames reveal who has been tempered stronger.
+              </p>
             </div>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">
-            <span className="text-lol-gold">COMPARE</span>{" "}
-            <span className="text-foreground">SUMMONERS</span>
-          </h1>
-          <p className="text-muted-foreground max-w-lg mx-auto">
-            See how two players stack up with a side-by-side comparison
-            of their season stats.
-          </p>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <div className="relative max-w-4xl mx-auto">
-            {/* Card glow */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-lol-blue/20 via-lol-gold/10 to-lol-blue/20 rounded-lg blur-lg" />
-            
-            <div className="relative lol-card rounded-lg p-6 md:p-8">
-              {/* Corner decorations */}
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-lol-gold/60 rounded-tl-lg" />
-              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-lol-gold/60 rounded-tr-lg" />
-              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-lol-gold/60 rounded-bl-lg" />
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-lol-gold/60 rounded-br-lg" />
-
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid gap-8 md:grid-cols-2">
-                  {/* Player 1 */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded border border-lol-blue bg-lol-darker text-sm font-bold text-lol-blue-glow">
-                        1
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid gap-8 md:grid-cols-2">
+                {/* Player 1 */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="forge-card rounded-lg p-6 h-full border-l-4 border-frost-blue">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-frost-blue/50 bg-frost-blue/10">
+                        <Snowflake className="h-5 w-5 text-frost-light" />
                       </div>
-                      <span className="font-semibold text-lol-blue-glow uppercase tracking-wide">
-                        Player One
-                      </span>
+                      <div>
+                        <h3 className="font-semibold text-frost-light">
+                          First Champion
+                        </h3>
+                        <p className="text-xs text-frost-blue/60 uppercase tracking-wider">
+                          The Challenger
+                        </p>
+                      </div>
                     </div>
+
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Summoner Name
                         </Label>
                         <Input
                           placeholder="Faker"
-                          value={gameName1}
-                          onChange={(e) => setGameName1(e.target.value)}
+                          value={player1.gameName}
+                          onChange={(e) =>
+                            setPlayer1({ ...player1, gameName: e.target.value })
+                          }
                           required
                           disabled={isLoading}
-                          className="bg-lol-darker border-lol-gold/30 focus:border-lol-gold"
+                          className="bg-mountain-dark border-frost-dark/50 focus:border-frost-blue"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Tagline
                         </Label>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lol-gold">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-frost-blue">
                             #
                           </span>
                           <Input
                             placeholder="KR1"
-                            value={tagLine1}
-                            onChange={(e) => setTagLine1(e.target.value)}
-                            className="pl-7 bg-lol-darker border-lol-gold/30 focus:border-lol-gold"
+                            value={player1.tagLine}
+                            onChange={(e) =>
+                              setPlayer1({
+                                ...player1,
+                                tagLine: e.target.value,
+                              })
+                            }
+                            className="pl-7 bg-mountain-dark border-frost-dark/50 focus:border-frost-blue"
                             required
                             disabled={isLoading}
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Region
                         </Label>
                         <Select
-                          value={region1}
-                          onValueChange={(v) => setRegion1(v as RiotRegion)}
+                          value={player1.region}
+                          onValueChange={(v) =>
+                            setPlayer1({ ...player1, region: v as RiotRegion })
+                          }
                           disabled={isLoading}
                         >
-                          <SelectTrigger className="bg-lol-darker border-lol-gold/30 focus:border-lol-gold">
+                          <SelectTrigger className="bg-mountain-dark border-frost-dark/50 focus:border-frost-blue">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-lol-dark border-lol-gold/30">
+                          <SelectContent className="bg-mountain-dark border-frost-dark/50">
                             {REGION_OPTIONS.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
+                              <SelectItem 
+                                key={opt.value} 
+                                value={opt.value}
+                                className="focus:bg-frost-blue/20 focus:text-frost-light"
+                              >
                                 {opt.label}
                               </SelectItem>
                             ))}
@@ -200,71 +216,89 @@ export default function ComparePage() {
                       </div>
                     </div>
                   </div>
+                </motion.div>
 
-                  {/* VS Separator (mobile) */}
-                  <div className="flex items-center justify-center md:hidden">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-lol-gold bg-lol-darker font-bold text-lol-gold">
-                      VS
-                    </div>
-                  </div>
-
-                  {/* Player 2 */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded border border-red-500/50 bg-lol-darker text-sm font-bold text-red-400">
-                        2
+                {/* Player 2 */}
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <div className="forge-card rounded-lg p-6 h-full border-r-4 border-forge-ember">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-forge-ember/50 bg-forge-ember/10">
+                        <Flame className="h-5 w-5 text-forge-ember" />
                       </div>
-                      <span className="font-semibold text-red-400 uppercase tracking-wide">
-                        Player Two
-                      </span>
+                      <div>
+                        <h3 className="font-semibold text-frost-light">
+                          Second Champion
+                        </h3>
+                        <p className="text-xs text-forge-ember/60 uppercase tracking-wider">
+                          The Defender
+                        </p>
+                      </div>
                     </div>
+
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Summoner Name
                         </Label>
                         <Input
-                          placeholder="Doublelift"
-                          value={gameName2}
-                          onChange={(e) => setGameName2(e.target.value)}
+                          placeholder="Caps"
+                          value={player2.gameName}
+                          onChange={(e) =>
+                            setPlayer2({ ...player2, gameName: e.target.value })
+                          }
                           required
                           disabled={isLoading}
-                          className="bg-lol-darker border-lol-gold/30 focus:border-lol-gold"
+                          className="bg-mountain-dark border-frost-dark/50 focus:border-forge-ember"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Tagline
                         </Label>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lol-gold">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-forge-ember">
                             #
                           </span>
                           <Input
-                            placeholder="NA1"
-                            value={tagLine2}
-                            onChange={(e) => setTagLine2(e.target.value)}
-                            className="pl-7 bg-lol-darker border-lol-gold/30 focus:border-lol-gold"
+                            placeholder="EU1"
+                            value={player2.tagLine}
+                            onChange={(e) =>
+                              setPlayer2({
+                                ...player2,
+                                tagLine: e.target.value,
+                              })
+                            }
+                            className="pl-7 bg-mountain-dark border-frost-dark/50 focus:border-forge-ember"
                             required
                             disabled={isLoading}
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
+                        <Label className="text-frost-light text-xs uppercase tracking-wide">
                           Region
                         </Label>
                         <Select
-                          value={region2}
-                          onValueChange={(v) => setRegion2(v as RiotRegion)}
+                          value={player2.region}
+                          onValueChange={(v) =>
+                            setPlayer2({ ...player2, region: v as RiotRegion })
+                          }
                           disabled={isLoading}
                         >
-                          <SelectTrigger className="bg-lol-darker border-lol-gold/30 focus:border-lol-gold">
+                          <SelectTrigger className="bg-mountain-dark border-frost-dark/50 focus:border-forge-ember">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-lol-dark border-lol-gold/30">
+                          <SelectContent className="bg-mountain-dark border-frost-dark/50">
                             {REGION_OPTIONS.map((opt) => (
-                              <SelectItem key={opt.value} value={opt.value}>
+                              <SelectItem 
+                                key={opt.value} 
+                                value={opt.value}
+                                className="focus:bg-forge-ember/20 focus:text-forge-ember"
+                              >
                                 {opt.label}
                               </SelectItem>
                             ))}
@@ -273,62 +307,96 @@ export default function ComparePage() {
                       </div>
                     </div>
                   </div>
+                </motion.div>
+              </div>
+
+              {/* VS Indicator */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 }}
+                className="flex justify-center -my-4 relative z-10"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-forge-ember bg-mountain-dark shadow-lg glow-ember">
+                  <span className="font-display text-xl font-bold text-forge-ember">
+                    VS
+                  </span>
                 </div>
+              </motion.div>
 
-                <Separator className="bg-lol-gold/20" />
-
-                {/* Season selector */}
-                <div className="max-w-xs mx-auto space-y-2">
-                  <Label className="text-lol-gold-light text-xs uppercase tracking-wide">
-                    Season to Compare
+              {/* Year selection */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex justify-center"
+              >
+                <div className="forge-card rounded-lg p-4 inline-flex items-center gap-4">
+                  <Label className="text-frost-light text-xs uppercase tracking-wide">
+                    Season
                   </Label>
                   <Select
                     value={year.toString()}
                     onValueChange={(v) => setYear(parseInt(v))}
                     disabled={isLoading}
                   >
-                    <SelectTrigger className="bg-lol-darker border-lol-gold/30 focus:border-lol-gold">
+                    <SelectTrigger className="w-[150px] bg-mountain-dark border-frost-dark/50">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-lol-dark border-lol-gold/30">
+                    <SelectContent className="bg-mountain-dark border-frost-dark/50">
                       {yearOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value.toString()}>
+                        <SelectItem
+                          key={opt.value}
+                          value={opt.value.toString()}
+                          className="focus:bg-frost-blue/20"
+                        >
                           {opt.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
+              </motion.div>
 
-                {error && (
-                  <div className="rounded border border-red-500/50 bg-red-500/10 p-3 text-sm text-red-400 text-center">
-                    {error}
-                  </div>
-                )}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="rounded border border-red-500/50 bg-red-500/10 p-4 text-sm text-red-400 text-center"
+                >
+                  {error}
+                </motion.div>
+              )}
 
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex justify-center"
+              >
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full lol-button h-14 text-base"
+                  className="forge-button px-12 h-14 text-base"
                   disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      COMPARING SUMMONERS...
+                      HEATING THE FORGE...
                     </>
                   ) : (
                     <>
-                      <GitCompare className="mr-2 h-5 w-5" />
-                      COMPARE NOW
+                      <Hammer className="mr-2 h-5 w-5" />
+                      BEGIN THE TRIAL
                     </>
                   )}
                 </Button>
-              </form>
-            </div>
-          </div>
-        </motion.div>
+              </motion.div>
+            </form>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }

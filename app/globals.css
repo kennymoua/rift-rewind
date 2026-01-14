@@ -4,74 +4,74 @@
 
 @layer base {
   :root {
-    /* LoL Light Theme (rarely used, but supported) */
-    --background: 220 20% 97%;
-    --foreground: 220 20% 10%;
-    --card: 220 15% 95%;
-    --card-foreground: 220 20% 10%;
-    --popover: 220 15% 95%;
-    --popover-foreground: 220 20% 10%;
-    --primary: 45 100% 51%;
-    --primary-foreground: 220 20% 10%;
-    --secondary: 220 15% 90%;
-    --secondary-foreground: 220 20% 10%;
-    --muted: 220 15% 90%;
-    --muted-foreground: 220 10% 40%;
-    --accent: 200 100% 50%;
-    --accent-foreground: 220 20% 10%;
+    /* Freljord Light Theme */
+    --background: 210 30% 96%;
+    --foreground: 210 40% 10%;
+    --card: 210 25% 94%;
+    --card-foreground: 210 40% 10%;
+    --popover: 210 25% 94%;
+    --popover-foreground: 210 40% 10%;
+    --primary: 25 95% 55%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 20% 90%;
+    --secondary-foreground: 210 40% 10%;
+    --muted: 210 20% 90%;
+    --muted-foreground: 210 15% 40%;
+    --accent: 195 100% 50%;
+    --accent-foreground: 210 40% 10%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 15% 85%;
-    --input: 220 15% 85%;
-    --ring: 45 100% 51%;
+    --border: 210 20% 85%;
+    --input: 210 20% 85%;
+    --ring: 25 95% 55%;
     --radius: 0.5rem;
 
-    /* LoL Brand Colors */
-    --lol-gold: 45 100% 51%;
-    --lol-gold-light: 45 100% 65%;
-    --lol-gold-dark: 38 100% 40%;
-    --lol-blue: 200 100% 50%;
-    --lol-blue-dark: 210 100% 30%;
-    --lol-blue-glow: 195 100% 60%;
-    --lol-bronze: 30 60% 40%;
-    --lol-dark: 220 30% 8%;
-    --lol-darker: 220 40% 5%;
-    --lol-magic: 280 80% 60%;
+    /* Freljord/Ornn Brand Colors */
+    --forge-ember: 25 95% 55%;
+    --forge-flame: 15 100% 60%;
+    --forge-gold: 38 90% 50%;
+    --frost-blue: 195 100% 50%;
+    --frost-light: 195 100% 70%;
+    --frost-dark: 200 80% 25%;
+    --mountain-dark: 210 40% 12%;
+    --mountain-stone: 210 20% 25%;
+    --snow-white: 210 30% 95%;
+    --ice-crystal: 185 80% 85%;
   }
 
   .dark {
-    /* LoL Dark Theme (Primary) */
-    --background: 220 40% 5%;
-    --foreground: 45 20% 90%;
-    --card: 220 35% 8%;
-    --card-foreground: 45 20% 90%;
-    --popover: 220 35% 10%;
-    --popover-foreground: 45 20% 90%;
-    --primary: 45 100% 51%;
-    --primary-foreground: 220 40% 5%;
-    --secondary: 220 30% 12%;
-    --secondary-foreground: 45 20% 85%;
-    --muted: 220 30% 15%;
-    --muted-foreground: 220 15% 55%;
-    --accent: 200 100% 50%;
-    --accent-foreground: 220 40% 5%;
+    /* Freljord Dark Theme (Primary) */
+    --background: 210 40% 8%;
+    --foreground: 195 30% 90%;
+    --card: 210 35% 12%;
+    --card-foreground: 195 30% 90%;
+    --popover: 210 35% 14%;
+    --popover-foreground: 195 30% 90%;
+    --primary: 25 95% 55%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 30% 18%;
+    --secondary-foreground: 195 25% 85%;
+    --muted: 210 30% 20%;
+    --muted-foreground: 210 20% 55%;
+    --accent: 195 100% 50%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 30% 18%;
-    --input: 220 30% 15%;
-    --ring: 45 100% 51%;
+    --border: 210 30% 22%;
+    --input: 210 30% 18%;
+    --ring: 25 95% 55%;
 
-    /* LoL Brand Colors - Same */
-    --lol-gold: 45 100% 51%;
-    --lol-gold-light: 45 100% 65%;
-    --lol-gold-dark: 38 100% 40%;
-    --lol-blue: 200 100% 50%;
-    --lol-blue-dark: 210 100% 30%;
-    --lol-blue-glow: 195 100% 60%;
-    --lol-bronze: 30 60% 40%;
-    --lol-dark: 220 30% 8%;
-    --lol-darker: 220 40% 5%;
-    --lol-magic: 280 80% 60%;
+    /* Freljord/Ornn Brand Colors - Same */
+    --forge-ember: 25 95% 55%;
+    --forge-flame: 15 100% 60%;
+    --forge-gold: 38 90% 50%;
+    --frost-blue: 195 100% 50%;
+    --frost-light: 195 100% 70%;
+    --frost-dark: 200 80% 25%;
+    --mountain-dark: 210 40% 8%;
+    --mountain-stone: 210 20% 25%;
+    --snow-white: 210 30% 95%;
+    --ice-crystal: 185 80% 85%;
   }
 }
 
@@ -91,64 +91,160 @@
   }
 }
 
-/* LoL-style scrollbar */
+/* Freljord-style scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--lol-darker));
+  background: hsl(var(--mountain-dark));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
-    hsl(var(--lol-gold-dark)) 0%,
-    hsl(var(--lol-gold)) 50%,
-    hsl(var(--lol-gold-dark)) 100%
+    hsl(var(--frost-dark)) 0%,
+    hsl(var(--frost-blue)) 50%,
+    hsl(var(--frost-dark)) 100%
   );
   border-radius: 4px;
-  border: 1px solid hsl(var(--lol-gold-dark));
+  border: 1px solid hsl(var(--frost-dark));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--lol-gold-light));
+  background: hsl(var(--frost-light));
 }
 
-/* LoL Gold gradient text */
-.text-lol-gold {
+/* Ember gradient text (Ornn's forge fire) */
+.text-forge-ember {
   background: linear-gradient(
     180deg,
-    hsl(var(--lol-gold-light)) 0%,
-    hsl(var(--lol-gold)) 50%,
-    hsl(var(--lol-gold-dark)) 100%
+    hsl(var(--forge-flame)) 0%,
+    hsl(var(--forge-ember)) 50%,
+    hsl(var(--forge-gold)) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* LoL Blue glow text */
-.text-lol-blue-glow {
-  color: hsl(var(--lol-blue-glow));
-  text-shadow: 0 0 10px hsl(var(--lol-blue) / 0.5),
-    0 0 20px hsl(var(--lol-blue) / 0.3);
+/* Frost blue glow text */
+.text-frost-glow {
+  color: hsl(var(--frost-light));
+  text-shadow: 0 0 10px hsl(var(--frost-blue) / 0.5),
+    0 0 20px hsl(var(--frost-blue) / 0.3);
 }
 
-/* Hextech border effect */
-.hextech-border {
-  position: relative;
-  border: 1px solid hsl(var(--lol-gold-dark) / 0.5);
+/* Forge card style - stone with ember accents */
+.forge-card {
   background: linear-gradient(
-    135deg,
-    hsl(var(--lol-dark)) 0%,
-    hsl(var(--lol-darker)) 100%
+    180deg,
+    hsl(210 35% 14%) 0%,
+    hsl(210 40% 10%) 100%
   );
+  border: 1px solid hsl(var(--frost-dark) / 0.5);
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--frost-blue) / 0.1),
+    0 4px 20px hsl(210 50% 5% / 0.5);
 }
 
-.hextech-border::before {
+.forge-card:hover {
+  border-color: hsl(var(--forge-ember) / 0.5);
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--forge-ember) / 0.15),
+    0 4px 30px hsl(var(--forge-ember) / 0.1),
+    0 0 20px hsl(var(--forge-ember) / 0.05);
+}
+
+/* Freljord mountains background */
+.bg-freljord {
+  background: 
+    /* Aurora effect at top */
+    radial-gradient(ellipse at 50% -20%, hsl(var(--frost-blue) / 0.15) 0%, transparent 50%),
+    /* Ember glow from forge */
+    radial-gradient(ellipse at 30% 80%, hsl(var(--forge-ember) / 0.08) 0%, transparent 40%),
+    /* Mountain shadow */
+    radial-gradient(ellipse at 80% 60%, hsl(var(--frost-dark) / 0.2) 0%, transparent 40%),
+    /* Ice reflection */
+    radial-gradient(ellipse at 20% 30%, hsl(var(--frost-light) / 0.05) 0%, transparent 30%),
+    /* Base gradient - dark mountains */
+    linear-gradient(180deg, hsl(210 40% 6%) 0%, hsl(210 35% 10%) 50%, hsl(210 40% 8%) 100%);
+}
+
+/* Mountain pattern overlay */
+.bg-mountains {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='60' viewBox='0 0 100 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60L25 30L50 50L75 20L100 60' fill='none' stroke='%2300d4ff' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 200px 120px;
+}
+
+/* Ice crystal pattern */
+.bg-ice {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0v60M0 30h60M10 10l40 40M50 10L10 50' fill='none' stroke='%2300d4ff' stroke-opacity='0.02' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+
+/* Ember glow effect */
+.glow-ember {
+  box-shadow: 
+    0 0 10px hsl(var(--forge-ember) / 0.4),
+    0 0 20px hsl(var(--forge-ember) / 0.3),
+    0 0 30px hsl(var(--forge-ember) / 0.2);
+}
+
+/* Frost glow effect */
+.glow-frost {
+  box-shadow: 
+    0 0 10px hsl(var(--frost-blue) / 0.4),
+    0 0 20px hsl(var(--frost-blue) / 0.3),
+    0 0 30px hsl(var(--frost-blue) / 0.2);
+}
+
+/* Forge Button style - ember/fire themed */
+.forge-button {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--forge-flame)) 0%,
+    hsl(var(--forge-ember)) 50%,
+    hsl(25 90% 45%) 100%
+  );
+  color: hsl(var(--snow-white));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid hsl(var(--forge-gold) / 0.6);
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--forge-flame) / 0.4),
+    0 2px 10px hsl(var(--forge-ember) / 0.4);
+  transition: all 0.2s ease;
+}
+
+.forge-button:hover {
+  background: linear-gradient(
+    180deg,
+    hsl(15 100% 65%) 0%,
+    hsl(var(--forge-flame)) 50%,
+    hsl(var(--forge-ember)) 100%
+  );
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--forge-flame) / 0.5),
+    0 4px 20px hsl(var(--forge-ember) / 0.5),
+    0 0 30px hsl(var(--forge-ember) / 0.3);
+  transform: translateY(-1px);
+}
+
+.forge-button:active {
+  transform: translateY(0);
+}
+
+/* Stone border with frost accents */
+.stone-border {
+  position: relative;
+  border: 1px solid hsl(var(--mountain-stone) / 0.5);
+}
+
+.stone-border::before {
   content: "";
   position: absolute;
   inset: -1px;
@@ -156,9 +252,9 @@
   border-radius: inherit;
   background: linear-gradient(
     135deg,
-    hsl(var(--lol-gold) / 0.6) 0%,
-    hsl(var(--lol-gold-dark) / 0.3) 50%,
-    hsl(var(--lol-gold) / 0.6) 100%
+    hsl(var(--frost-blue) / 0.4) 0%,
+    hsl(var(--mountain-stone) / 0.3) 50%,
+    hsl(var(--frost-blue) / 0.4) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -166,171 +262,65 @@
   pointer-events: none;
 }
 
-/* LoL Card style */
-.lol-card {
-  background: linear-gradient(
-    180deg,
-    hsl(220 35% 12%) 0%,
-    hsl(220 40% 6%) 100%
-  );
-  border: 1px solid hsl(var(--lol-gold-dark) / 0.4);
-  box-shadow: 
-    inset 0 1px 0 hsl(var(--lol-gold) / 0.1),
-    0 4px 20px hsl(220 50% 3% / 0.5);
-}
-
-.lol-card:hover {
-  border-color: hsl(var(--lol-gold) / 0.6);
-  box-shadow: 
-    inset 0 1px 0 hsl(var(--lol-gold) / 0.2),
-    0 4px 30px hsl(var(--lol-gold) / 0.1),
-    0 0 20px hsl(var(--lol-gold) / 0.05);
-}
-
-/* Summoner's Rift inspired background */
-.bg-rift {
-  background: 
-    radial-gradient(ellipse at 50% 0%, hsl(var(--lol-blue) / 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, hsl(var(--lol-magic) / 0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 20% 60%, hsl(var(--lol-blue-dark) / 0.1) 0%, transparent 40%),
-    linear-gradient(180deg, hsl(var(--lol-darker)) 0%, hsl(var(--lol-dark)) 100%);
-}
-
-/* Hexagonal pattern overlay */
-.bg-hextech {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='none' stroke='%23c8aa6e' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E");
-  background-size: 60px 60px;
-}
-
-/* Gold glow effect */
-.glow-gold {
-  box-shadow: 
-    0 0 10px hsl(var(--lol-gold) / 0.3),
-    0 0 20px hsl(var(--lol-gold) / 0.2),
-    0 0 30px hsl(var(--lol-gold) / 0.1);
-}
-
-/* Blue glow effect */
-.glow-blue {
-  box-shadow: 
-    0 0 10px hsl(var(--lol-blue) / 0.4),
-    0 0 20px hsl(var(--lol-blue) / 0.3),
-    0 0 30px hsl(var(--lol-blue) / 0.2);
-}
-
-/* LoL Button style */
-.lol-button {
-  background: linear-gradient(
-    180deg,
-    hsl(var(--lol-gold-light)) 0%,
-    hsl(var(--lol-gold)) 50%,
-    hsl(var(--lol-gold-dark)) 100%
-  );
-  color: hsl(var(--lol-darker));
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border: 2px solid hsl(var(--lol-gold-light));
-  box-shadow: 
-    inset 0 1px 0 hsl(0 0% 100% / 0.3),
-    0 2px 10px hsl(var(--lol-gold) / 0.3);
-  transition: all 0.2s ease;
-}
-
-.lol-button:hover {
-  background: linear-gradient(
-    180deg,
-    hsl(var(--lol-gold)) 0%,
-    hsl(var(--lol-gold-light)) 50%,
-    hsl(var(--lol-gold)) 100%
-  );
-  box-shadow: 
-    inset 0 1px 0 hsl(0 0% 100% / 0.4),
-    0 4px 20px hsl(var(--lol-gold) / 0.5);
-  transform: translateY(-1px);
-}
-
-.lol-button:active {
-  transform: translateY(0);
-}
-
-/* Rune-like decorative elements */
-.rune-corner::before,
-.rune-corner::after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid hsl(var(--lol-gold) / 0.5);
-}
-
-.rune-corner::before {
-  top: -1px;
-  left: -1px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.rune-corner::after {
-  bottom: -1px;
-  right: -1px;
-  border-left: none;
-  border-top: none;
-}
-
-/* Champion portrait frame */
-.champion-frame {
-  border: 2px solid hsl(var(--lol-gold));
-  box-shadow: 
-    inset 0 0 10px hsl(var(--lol-gold) / 0.3),
-    0 0 10px hsl(var(--lol-gold) / 0.2);
-}
-
-/* Rank tier colors */
-.tier-iron { color: #5a5a5a; }
-.tier-bronze { color: #a17419; }
-.tier-silver { color: #7b8894; }
-.tier-gold { color: #c8aa6e; }
-.tier-platinum { color: #4a9a8e; }
-.tier-emerald { color: #00a86b; }
-.tier-diamond { color: #576cce; }
-.tier-master { color: #9d48e0; }
-.tier-grandmaster { color: #cd3c3c; }
-.tier-challenger { color: #f4c874; }
-
-/* Animated border shimmer */
-@keyframes border-shimmer {
-  0% {
-    background-position: 0% 50%;
+/* Animated ember shimmer */
+@keyframes ember-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--forge-ember) / 0.3);
+    border-color: hsl(var(--forge-ember) / 0.5);
   }
   50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    box-shadow: 0 0 35px hsl(var(--forge-ember) / 0.5);
+    border-color: hsl(var(--forge-ember) / 0.8);
   }
 }
 
-.shimmer-border {
-  background: linear-gradient(
-    90deg,
-    hsl(var(--lol-gold-dark)) 0%,
-    hsl(var(--lol-gold-light)) 25%,
-    hsl(var(--lol-gold)) 50%,
-    hsl(var(--lol-gold-light)) 75%,
-    hsl(var(--lol-gold-dark)) 100%
-  );
-  background-size: 200% 100%;
-  animation: border-shimmer 3s ease infinite;
+.animate-ember {
+  animation: ember-pulse 2s ease-in-out infinite;
 }
 
-/* Victory/Defeat colors */
+/* Frost shimmer */
+@keyframes frost-shimmer {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.frost-shimmer {
+  animation: frost-shimmer 3s ease-in-out infinite;
+}
+
+/* Victory/Defeat - Freljord style */
 .victory {
-  color: hsl(var(--lol-gold));
-  text-shadow: 0 0 10px hsl(var(--lol-gold) / 0.5);
+  color: hsl(var(--frost-light));
+  text-shadow: 0 0 10px hsl(var(--frost-blue) / 0.5);
 }
 
 .defeat {
-  color: #8b0000;
-  text-shadow: 0 0 10px hsl(0 100% 30% / 0.5);
+  color: hsl(var(--forge-ember));
+  text-shadow: 0 0 10px hsl(var(--forge-ember) / 0.5);
 }
+
+/* Ornn's anvil icon background */
+.anvil-icon {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--mountain-stone)) 0%,
+    hsl(var(--mountain-dark)) 100%
+  );
+  border: 2px solid hsl(var(--forge-ember) / 0.5);
+}
+
+/* Stat tiers with Freljord colors */
+.tier-iron { color: #5a5a5a; }
+.tier-bronze { color: #a17419; }
+.tier-silver { color: #7b8894; }
+.tier-gold { color: #f4a261; }
+.tier-platinum { color: #00d4ff; }
+.tier-emerald { color: #00a86b; }
+.tier-diamond { color: #00b4d8; }
+.tier-master { color: #ff6b35; }
+.tier-grandmaster { color: #ff4500; }
+.tier-challenger { color: #00d4ff; }

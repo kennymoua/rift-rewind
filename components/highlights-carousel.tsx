@@ -2,143 +2,174 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Trophy, Skull, Clock, TrendingUp } from "lucide-react";
-import Image from "next/image";
-import { cn, getChampionIconUrl } from "@/lib/utils";
+import { ChevronLeft, ChevronRight, Trophy, Skull, Timer, Flame, Snowflake } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { MatchHighlight } from "@/lib/types";
+import { cn, formatDuration } from "@/lib/utils";
+import type { MatchSummary } from "@/lib/types";
 
 interface HighlightsCarouselProps {
-  highlights: MatchHighlight[];
+  highlights: Array<{
+    type: "best" | "worst";
+    title: string;
+    match: MatchSummary;
+  }>;
 }
 
 const highlightIcons = {
-  best_match: Trophy,
-  worst_match: Skull,
-  longest_game: Clock,
-  biggest_comeback: TrendingUp,
+  best: Trophy,
+  worst: Skull,
 };
 
 const highlightColors = {
-  best_match: "border-lol-gold bg-lol-gold/10",
-  worst_match: "border-red-500/50 bg-red-500/10",
-  longest_game: "border-lol-blue/50 bg-lol-blue/10",
-  biggest_comeback: "border-emerald-500/50 bg-emerald-500/10",
+  best: "frost",
+  worst: "ember",
 };
 
 export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const goToPrevious = () => {
+  const handlePrev = () => {
     setCurrentIndex((prev) =>
       prev === 0 ? highlights.length - 1 : prev - 1
     );
   };
 
-  const goToNext = () => {
+  const handleNext = () => {
     setCurrentIndex((prev) =>
       prev === highlights.length - 1 ? 0 : prev + 1
     );
   };
 
-  if (highlights.length === 0) {
-    return null;
-  }
+  if (!highlights.length) return null;
 
   const current = highlights[currentIndex];
-  const Icon = highlightIcons[current.type];
-  const colorClass = highlightColors[current.type];
+  const Icon = highlightIcons[current.type] || Trophy;
+  const colorTheme = highlightColors[current.type] || "frost";
 
   return (
-    <div className="w-full">
+    <div className="forge-card relative rounded-lg p-6 overflow-hidden">
+      {/* Background glow based on highlight type */}
+      <div className={cn(
+        "absolute inset-0 opacity-10",
+        colorTheme === "frost" 
+          ? "bg-gradient-to-br from-frost-blue/20 to-transparent" 
+          : "bg-gradient-to-br from-forge-ember/20 to-transparent"
+      )} />
+
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="h-[1px] w-8 bg-gradient-to-r from-lol-gold to-transparent" />
-          <h3 className="text-lg font-semibold text-lol-gold uppercase tracking-wide">
-            Season Highlights
-          </h3>
+          <div className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-lg border",
+            colorTheme === "frost" 
+              ? "border-frost-blue/50 bg-frost-blue/10" 
+              : "border-forge-ember/50 bg-forge-ember/10"
+          )}>
+            <Icon className={cn(
+              "h-5 w-5",
+              colorTheme === "frost" ? "text-frost-light" : "text-forge-ember"
+            )} />
+          </div>
+          <div>
+            <h3 className="font-semibold text-frost-light">Battle Memories</h3>
+            <p className="text-xs text-frost-blue/60 uppercase tracking-wider">
+              Forged in {highlights.length} Moments
+            </p>
+          </div>
         </div>
+
+        {/* Navigation */}
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
-            onClick={goToPrevious}
+            className="h-8 w-8 border-frost-dark bg-mountain-dark hover:bg-frost-blue/20 hover:border-frost-blue"
+            onClick={handlePrev}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-muted-foreground min-w-[3rem] text-center">
+          <span className="text-xs text-muted-foreground w-12 text-center">
             {currentIndex + 1} / {highlights.length}
           </span>
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
-            onClick={goToNext}
+            className="h-8 w-8 border-frost-dark bg-mountain-dark hover:bg-frost-blue/20 hover:border-frost-blue"
+            onClick={handleNext}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-lg">
+      {/* Carousel content */}
+      <div className="relative min-h-[180px] z-10">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
+            exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
+            className="space-y-4"
           >
-            <div className={cn("lol-card rounded-lg border-2 p-6", colorClass)}>
-              <div className="flex items-start gap-4">
-                {/* Champion icon */}
-                <div className="relative h-20 w-20 shrink-0 rounded border-2 border-lol-gold/50 overflow-hidden champion-frame">
-                  <Image
-                    src={getChampionIconUrl(current.championName)}
-                    alt={current.championName}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+            <h4 className={cn(
+              "text-lg font-semibold",
+              colorTheme === "frost" ? "text-frost-light" : "text-forge-ember"
+            )}>
+              {current.title}
+            </h4>
 
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded border border-lol-gold/30 bg-lol-darker">
-                      <Icon className="h-4 w-4 text-lol-gold" />
-                    </div>
-                    <h4 className="font-semibold text-lg text-lol-gold">
-                      {current.title}
-                    </h4>
+            <div className="rounded-lg border border-frost-dark/50 bg-mountain-dark/50 p-4">
+              <div className="flex flex-wrap gap-4">
+                {/* Champion */}
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    "h-14 w-14 rounded-lg border-2 bg-mountain-stone flex items-center justify-center",
+                    current.match.win ? "border-frost-blue/50" : "border-forge-ember/50"
+                  )}>
+                    <span className="text-lg font-bold text-frost-light">
+                      {current.match.championName.slice(0, 2)}
+                    </span>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {current.description}
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <div className="flex items-center gap-1.5 text-sm">
-                      <span className="font-mono font-bold text-foreground">
-                        {current.stats.kda}
-                      </span>
-                      <span className="text-muted-foreground text-xs uppercase">KDA</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-sm">
-                      <span className="font-mono font-bold text-foreground">
-                        {current.stats.duration}
-                      </span>
-                      <span className="text-muted-foreground text-xs uppercase">Duration</span>
-                    </div>
-                    <div
+                  <div>
+                    <p className="font-semibold text-foreground">
+                      {current.match.championName}
+                    </p>
+                    <p
                       className={cn(
-                        "px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide",
-                        current.stats.result === "Victory"
-                          ? "bg-lol-gold/20 text-lol-gold"
-                          : "bg-red-500/20 text-red-400"
+                        "text-sm font-medium",
+                        current.match.win ? "victory" : "defeat"
                       )}
                     >
-                      {current.stats.result}
+                      {current.match.win ? "Victory" : "Defeat"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Stats */}
+                <div className="flex flex-wrap gap-4 ml-auto">
+                  <div className="text-center">
+                    <p className="text-lg font-bold text-foreground">
+                      {current.match.kills}/{current.match.deaths}/
+                      {current.match.assists}
+                    </p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">KDA</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-lg font-bold text-frost-light">
+                      {current.match.cs}
+                    </p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">CS</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="flex items-center gap-1 justify-center">
+                      <Timer className="h-3 w-3 text-frost-blue" />
+                      <p className="text-lg font-bold text-foreground">
+                        {formatDuration(current.match.gameDuration)}
+                      </p>
                     </div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Duration</p>
                   </div>
                 </div>
               </div>
@@ -147,17 +178,19 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
         </AnimatePresence>
       </div>
 
-      {/* Dots indicator */}
-      <div className="flex justify-center gap-2 mt-4">
+      {/* Indicator dots */}
+      <div className="flex justify-center gap-2 mt-4 relative z-10">
         {highlights.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={cn(
-              "h-2 rounded-full transition-all",
+              "h-1.5 rounded-full transition-all duration-200",
               index === currentIndex
-                ? "w-6 bg-lol-gold"
-                : "w-2 bg-lol-gold/30 hover:bg-lol-gold/50"
+                ? colorTheme === "frost" 
+                  ? "w-6 bg-frost-blue" 
+                  : "w-6 bg-forge-ember"
+                : "w-1.5 bg-frost-dark hover:bg-frost-blue/50"
             )}
           />
         ))}

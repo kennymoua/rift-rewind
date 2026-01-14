@@ -6,94 +6,125 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
-  Legend,
   Tooltip,
 } from "recharts";
+import { Shield } from "lucide-react";
 import type { RoleDistribution } from "@/lib/types";
 
 interface RoleChartProps {
-  title: string;
   data: RoleDistribution[];
-  delay?: number;
 }
 
-// LoL-themed colors for roles
-const COLORS = [
-  "#c8aa6e", // Gold - Primary
-  "#0ac8b9", // Hextech cyan
-  "#c89b3c", // Bronze gold
-  "#0397ab", // Teal
-  "#5b5a56", // Silver/gray
-];
+// Freljord color palette for roles
+const ROLE_COLORS: Record<string, string> = {
+  TOP: "hsl(25 95% 55%)",      // forge-ember
+  JUNGLE: "hsl(120 50% 40%)",  // forest green
+  MID: "hsl(38 90% 50%)",      // forge-gold
+  ADC: "hsl(195 100% 50%)",    // frost-blue
+  SUPPORT: "hsl(195 100% 70%)", // frost-light
+};
 
-export function RoleChart({ title, data, delay = 0 }: RoleChartProps) {
-  const chartData = data.map((d) => ({
-    name: d.role,
-    value: d.games,
-    percentage: d.percentage,
+export function RoleChart({ data }: RoleChartProps) {
+  const chartData = data.map((item) => ({
+    name: item.role,
+    value: item.games,
+    percentage: item.percentage,
   }));
+
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: { name: string; value: number; percentage: number } }> }) => {
+    if (active && payload && payload.length) {
+      const item = payload[0].payload;
+      return (
+        <div className="forge-card rounded-lg p-3 border border-frost-dark">
+          <p className="font-semibold text-frost-light mb-1">{item.name}</p>
+          <p className="text-sm text-muted-foreground">
+            Games: <span className="text-foreground">{item.value}</span>
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Percentage: <span className="text-frost-blue">{item.percentage}%</span>
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      transition={{ duration: 0.5 }}
+      className="forge-card rounded-lg p-6"
     >
-      <div className="lol-card rounded-lg overflow-hidden">
-        <div className="p-4 border-b border-lol-gold/20">
-          <h3 className="text-sm font-semibold text-lol-gold uppercase tracking-wide">
-            {title}
-          </h3>
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-frost-blue/50 bg-frost-blue/10">
+          <Shield className="h-5 w-5 text-frost-light" />
         </div>
-        <div className="p-4">
-          <div className="h-[220px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  cx="50%"
-                  cy="45%"
-                  innerRadius={45}
-                  outerRadius={70}
-                  paddingAngle={3}
-                  dataKey="value"
-                  stroke="hsl(220 40% 8%)"
-                  strokeWidth={2}
-                >
-                  {chartData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(220 40% 8%)",
-                    border: "1px solid rgba(200, 170, 110, 0.3)",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                  }}
-                  formatter={(value: number, name: string, props: unknown) => {
-                    const entry = props as { payload: { percentage: number } };
-                    return [
-                      `${value} games (${entry.payload.percentage.toFixed(1)}%)`,
-                      name,
-                    ];
+        <div>
+          <h3 className="font-semibold text-frost-light">Role Specialization</h3>
+          <p className="text-xs text-frost-blue/60">
+            Where you've been forging your skills
+          </p>
+        </div>
+      </div>
+
+      {/* Chart and legend container */}
+      <div className="flex flex-col md:flex-row items-center gap-6">
+        {/* Pie chart */}
+        <div className="h-[200px] w-full md:w-1/2">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={2}
+                dataKey="value"
+                stroke="hsl(210 40% 8%)"
+                strokeWidth={2}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={ROLE_COLORS[entry.name] || "hsl(210 20% 55%)"}
+                  />
+                ))}
+              </Pie>
+              <Tooltip content={<CustomTooltip />} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Custom legend with stats */}
+        <div className="flex-1 space-y-2">
+          {chartData.map((item) => (
+            <div
+              key={item.name}
+              className="flex items-center justify-between rounded-lg border border-frost-dark/50 bg-mountain-dark/50 p-3 hover:border-frost-blue/30 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="h-3 w-3 rounded-sm"
+                  style={{
+                    backgroundColor:
+                      ROLE_COLORS[item.name] || "hsl(210 20% 55%)",
                   }}
                 />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  formatter={(value) => (
-                    <span style={{ color: "rgba(200, 170, 110, 0.8)", fontSize: 11 }}>
-                      {value}
-                    </span>
-                  )}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                <span className="text-sm font-medium text-frost-light">
+                  {item.name}
+                </span>
+              </div>
+              <div className="flex items-center gap-4 text-sm">
+                <span className="text-muted-foreground">
+                  {item.value} <span className="text-xs">games</span>
+                </span>
+                <span className="text-frost-blue font-medium">{item.percentage}%</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </motion.div>

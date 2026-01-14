@@ -1,168 +1,163 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Share2, Download, Copy, Check, ExternalLink, Swords } from "lucide-react";
+import { Share2, Download, Trophy, Target, Flame, Hammer, Mountain } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { isShareCardsEnabled } from "@/lib/constants";
 import type { RewindResult } from "@/lib/types";
 
 interface ShareCardPreviewProps {
   result: RewindResult;
-  delay?: number;
 }
 
-export function ShareCardPreview({ result, delay = 0 }: ShareCardPreviewProps) {
-  const [copied, setCopied] = useState(false);
-
-  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/rewind/${result.jobId}`;
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  };
-
-  const handleShare = async () => {
+export function ShareCardPreview({ result }: ShareCardPreviewProps) {
+  const handleShare = () => {
+    // TODO: Implement share functionality
+    // Could generate an image or copy a link
     if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${result.player.gameName}'s Rift Rewind ${result.seasonFilter.year}`,
-          text: `Check out my League of Legends season recap!`,
-          url: shareUrl,
-        });
-      } catch (err) {
-        console.error("Share failed:", err);
-      }
-    } else {
-      handleCopyLink();
+      navigator.share({
+        title: "My Forge Report",
+        text: `I played ${result.insights.stats.gamesPlayed} games this season with ${result.insights.stats.winrate}% winrate! Forged in The Forge.`,
+        url: window.location.href,
+      });
     }
   };
+
+  const handleDownload = () => {
+    // TODO: Implement download as image
+    // Would use html2canvas or similar
+    alert("Image download coming soon from Ornn's workshop!");
+  };
+
+  const topChampion = result.insights.topChampions[0];
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      transition={{ duration: 0.5 }}
+      className="forge-card relative rounded-lg p-6 overflow-hidden"
     >
-      <div className="lol-card rounded-lg overflow-hidden">
-        {/* Header */}
-        <div className="p-4 border-b border-lol-gold/20">
-          <div className="flex items-center gap-2">
-            <Share2 className="h-5 w-5 text-lol-gold" />
-            <h3 className="font-semibold text-lol-gold uppercase tracking-wide">
-              Share Your Rewind
-            </h3>
-          </div>
+      {/* Background accents */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-frost-blue/5 via-transparent to-forge-ember/5" />
+      
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6 relative z-10">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-frost-blue/50 bg-frost-blue/10">
+          <Share2 className="h-5 w-5 text-frost-light" />
         </div>
+        <div>
+          <h3 className="font-semibold text-frost-light">Share Your Journey</h3>
+          <p className="text-xs text-frost-blue/60 uppercase tracking-wider">
+            Display your forged achievements
+          </p>
+        </div>
+      </div>
 
-        <div className="p-5 space-y-4">
-          {/* Preview card */}
-          <div className="relative aspect-[1200/630] w-full rounded border-2 border-lol-gold/30 overflow-hidden bg-gradient-to-br from-lol-dark via-lol-darker to-lol-dark">
-            {/* Background pattern */}
-            <div className="absolute inset-0 bg-hextech opacity-50" />
-            
-            {/* Corner decorations */}
-            <div className="absolute top-2 left-2 w-6 h-6 border-t-2 border-l-2 border-lol-gold/50" />
-            <div className="absolute top-2 right-2 w-6 h-6 border-t-2 border-r-2 border-lol-gold/50" />
-            <div className="absolute bottom-2 left-2 w-6 h-6 border-b-2 border-l-2 border-lol-gold/50" />
-            <div className="absolute bottom-2 right-2 w-6 h-6 border-b-2 border-r-2 border-lol-gold/50" />
-            
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              {/* Logo */}
-              <div className="flex items-center gap-2 mb-3">
-                <Swords className="h-5 w-5 text-lol-gold" />
-                <span className="text-xs uppercase tracking-widest text-lol-gold/70">
-                  Rift Rewind
+      {/* Preview card */}
+      <div className="relative z-10 rounded-lg border-2 border-frost-dark bg-gradient-to-b from-mountain-stone/50 to-mountain-dark p-5 mb-4 overflow-hidden">
+        {/* Mountain pattern background */}
+        <div className="absolute inset-0 bg-mountains opacity-30" />
+        
+        {/* Inner glow */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-forge-ember/10 blur-3xl rounded-full" />
+        
+        {/* Card content */}
+        <div className="relative z-10">
+          {/* Header with logo */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded border border-forge-ember/50 bg-mountain-dark">
+                <Hammer className="h-4 w-4 text-forge-ember" />
+              </div>
+              <div>
+                <span className="font-display text-sm font-bold">
+                  <span className="text-forge-ember">THE</span>{" "}
+                  <span className="text-frost-light">FORGE</span>
                 </span>
-              </div>
-              
-              {/* Player name */}
-              <div className="text-xl font-bold mb-1">
-                <span className="text-lol-gold">{result.player.gameName}</span>
-                <span className="text-muted-foreground">#{result.player.tagLine}</span>
-              </div>
-              
-              {/* Season */}
-              <div className="text-3xl font-bold text-lol-gold mb-4">
-                Season {result.seasonFilter.year}
-              </div>
-              
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 text-sm">
-                <div>
-                  <div className="text-xl font-bold text-foreground">
-                    {result.insights.stats.gamesPlayed}
-                  </div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Games
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-foreground">
-                    {(result.insights.stats.winrate * 100).toFixed(0)}%
-                  </div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Win Rate
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-foreground">
-                    {result.insights.stats.avgKda.toFixed(1)}
-                  </div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                    Avg KDA
-                  </div>
+                <div className="text-[8px] text-frost-blue/60 tracking-widest uppercase flex items-center gap-1">
+                  <Mountain className="h-2 w-2" />
+                  Season {result.seasonFilter.year}
                 </div>
               </div>
             </div>
+            <div className="text-right">
+              <p className="text-xs text-frost-light font-medium">{result.player.gameName}</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                {result.player.region.toUpperCase()}
+              </p>
+            </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant="outline"
-              className="flex-1 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
-              onClick={handleCopyLink}
-            >
-              {copied ? (
-                <Check className="mr-2 h-4 w-4 text-emerald-400" />
-              ) : (
-                <Copy className="mr-2 h-4 w-4" />
-              )}
-              {copied ? "Copied!" : "Copy Link"}
-            </Button>
-
-            <Button
-              variant="outline"
-              className="flex-1 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
-              onClick={handleShare}
-            >
-              <ExternalLink className="mr-2 h-4 w-4" />
-              Share
-            </Button>
-
-            {isShareCardsEnabled() && (
-              <Button
-                className="w-full mt-2 lol-button"
-                onClick={() => {
-                  alert("Share card generation coming soon!");
-                }}
-              >
-                <Download className="mr-2 h-4 w-4" />
-                Generate Share Card
-              </Button>
-            )}
+          {/* Stats grid */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="text-center rounded border border-frost-dark/50 bg-mountain-dark/50 p-2">
+              <p className="text-xl font-bold text-frost-light">
+                {result.insights.stats.gamesPlayed}
+              </p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                Battles
+              </p>
+            </div>
+            <div className="text-center rounded border border-frost-blue/40 bg-frost-blue/10 p-2">
+              <p className="text-xl font-bold text-frost-light">
+                {result.insights.stats.winrate}%
+              </p>
+              <p className="text-[10px] text-frost-blue uppercase tracking-wider">
+                Winrate
+              </p>
+            </div>
+            <div className="text-center rounded border border-forge-ember/40 bg-forge-ember/10 p-2">
+              <p className="text-xl font-bold text-forge-ember">
+                {result.insights.stats.longestWinStreak}
+              </p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                Win Streak
+              </p>
+            </div>
           </div>
 
-          <p className="text-xs text-muted-foreground text-center">
-            Share your legendary season with friends!
+          {/* Top champion */}
+          {topChampion && (
+            <div className="flex items-center gap-3 rounded border border-forge-gold/40 bg-forge-gold/5 p-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded border border-forge-gold/50 bg-mountain-dark">
+                <Trophy className="h-5 w-5 text-forge-gold" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-foreground">
+                  {topChampion.championName}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {topChampion.gamesPlayed} games • {topChampion.winrate}% WR
+                </p>
+              </div>
+              <Flame className="h-5 w-5 text-forge-ember" />
+            </div>
+          )}
+
+          {/* Footer quote */}
+          <p className="text-[9px] text-center text-muted-foreground/60 mt-3 italic">
+            "Forged in the fires of Freljord"
           </p>
         </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex gap-3 relative z-10">
+        <Button
+          variant="outline"
+          className="flex-1 border-frost-dark bg-mountain-dark hover:bg-frost-blue/20 hover:border-frost-blue"
+          onClick={handleDownload}
+        >
+          <Download className="mr-2 h-4 w-4" />
+          Download
+        </Button>
+        <Button 
+          className="flex-1 forge-button" 
+          onClick={handleShare}
+        >
+          <Share2 className="mr-2 h-4 w-4" />
+          Share
+        </Button>
       </div>
     </motion.div>
   );

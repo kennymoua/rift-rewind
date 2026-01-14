@@ -9,116 +9,98 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Area,
 } from "recharts";
-import type { WinrateDataPoint } from "@/lib/types";
+import { TrendingUp } from "lucide-react";
 
 interface LineChartCardProps {
   title: string;
-  data: WinrateDataPoint[];
-  delay?: number;
+  subtitle?: string;
+  data: Array<Record<string, unknown>>;
+  dataKey: string;
+  xAxisKey: string;
 }
 
-export function LineChartCard({ title, data, delay = 0 }: LineChartCardProps) {
-  // Transform data for the chart
-  const chartData = data.map((d) => ({
-    name: d.period,
-    winrate: Math.round(d.winrate * 100),
-    games: d.games,
-  }));
-
+export function LineChartCard({
+  title,
+  subtitle,
+  data,
+  dataKey,
+  xAxisKey,
+}: LineChartCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      transition={{ duration: 0.5 }}
+      className="forge-card rounded-lg p-6"
     >
-      <div className="lol-card rounded-lg overflow-hidden">
-        <div className="p-4 border-b border-lol-gold/20">
-          <h3 className="text-sm font-semibold text-lol-gold uppercase tracking-wide">
-            {title}
-          </h3>
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-frost-blue/50 bg-frost-blue/10">
+          <TrendingUp className="h-5 w-5 text-frost-light" />
         </div>
-        <div className="p-4">
-          <div className="h-[220px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-              >
-                <defs>
-                  <linearGradient id="colorWinrate" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor="#c8aa6e"
-                      stopOpacity={0.3}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="#c8aa6e"
-                      stopOpacity={0}
-                    />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="rgba(200, 170, 110, 0.1)"
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="name"
-                  tick={{ fontSize: 11, fill: "rgba(200, 170, 110, 0.6)" }}
-                  axisLine={{ stroke: "rgba(200, 170, 110, 0.2)" }}
-                  tickLine={false}
-                />
-                <YAxis
-                  tick={{ fontSize: 11, fill: "rgba(200, 170, 110, 0.6)" }}
-                  axisLine={false}
-                  tickLine={false}
-                  domain={[0, 100]}
-                  tickFormatter={(value) => `${value}%`}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "hsl(220 40% 8%)",
-                    border: "1px solid rgba(200, 170, 110, 0.3)",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                  }}
-                  formatter={(value: number) => [
-                    `${value}%`,
-                    "Win Rate",
-                  ]}
-                  labelStyle={{ color: "#c8aa6e" }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="winrate"
-                  stroke="#c8aa6e"
-                  fill="url(#colorWinrate)"
-                  strokeWidth={0}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="winrate"
-                  stroke="#c8aa6e"
-                  strokeWidth={2}
-                  dot={{
-                    fill: "#c8aa6e",
-                    strokeWidth: 0,
-                    r: 3,
-                  }}
-                  activeDot={{
-                    r: 5,
-                    fill: "#c8aa6e",
-                    stroke: "hsl(220 40% 8%)",
-                    strokeWidth: 2,
-                  }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        <div>
+          <h3 className="font-semibold text-frost-light">{title}</h3>
+          {subtitle && (
+            <p className="text-xs text-frost-blue/60">{subtitle}</p>
+          )}
         </div>
+      </div>
+
+      {/* Chart */}
+      <div className="h-[250px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={data}
+            margin={{ top: 5, right: 10, left: -10, bottom: 5 }}
+          >
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke="hsl(210 30% 22%)" 
+              vertical={false}
+            />
+            <XAxis
+              dataKey={xAxisKey}
+              tick={{ fontSize: 11, fill: "hsl(210 20% 55%)" }}
+              axisLine={{ stroke: "hsl(210 30% 22%)" }}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fontSize: 11, fill: "hsl(210 20% 55%)" }}
+              axisLine={false}
+              tickLine={false}
+              domain={[0, 100]}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "hsl(210 35% 12%)",
+                border: "1px solid hsl(195 100% 50% / 0.3)",
+                borderRadius: "8px",
+                padding: "8px 12px",
+              }}
+              labelStyle={{ color: "hsl(195 100% 70%)", fontWeight: 600 }}
+              itemStyle={{ color: "hsl(195 30% 90%)" }}
+            />
+            <Line
+              type="monotone"
+              dataKey={dataKey}
+              stroke="hsl(195 100% 50%)"
+              strokeWidth={3}
+              dot={{
+                fill: "hsl(210 40% 8%)",
+                stroke: "hsl(195 100% 50%)",
+                strokeWidth: 2,
+                r: 4,
+              }}
+              activeDot={{
+                fill: "hsl(195 100% 70%)",
+                stroke: "hsl(195 100% 50%)",
+                strokeWidth: 2,
+                r: 6,
+              }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </motion.div>
   );

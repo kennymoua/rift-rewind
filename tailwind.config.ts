@@ -51,19 +51,23 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // LoL Brand Colors
-        lol: {
-          gold: "hsl(var(--lol-gold))",
-          "gold-light": "hsl(var(--lol-gold-light))",
-          "gold-dark": "hsl(var(--lol-gold-dark))",
-          blue: "hsl(var(--lol-blue))",
-          "blue-dark": "hsl(var(--lol-blue-dark))",
-          "blue-glow": "hsl(var(--lol-blue-glow))",
-          bronze: "hsl(var(--lol-bronze))",
-          dark: "hsl(var(--lol-dark))",
-          darker: "hsl(var(--lol-darker))",
-          magic: "hsl(var(--lol-magic))",
+        // Freljord/Ornn Brand Colors
+        forge: {
+          ember: "hsl(var(--forge-ember))",
+          flame: "hsl(var(--forge-flame))",
+          gold: "hsl(var(--forge-gold))",
         },
+        frost: {
+          blue: "hsl(var(--frost-blue))",
+          light: "hsl(var(--frost-light))",
+          dark: "hsl(var(--frost-dark))",
+        },
+        mountain: {
+          dark: "hsl(var(--mountain-dark))",
+          stone: "hsl(var(--mountain-stone))",
+        },
+        snow: "hsl(var(--snow-white))",
+        ice: "hsl(var(--ice-crystal))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -97,22 +101,22 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
         },
-        glow: {
+        "ember-glow": {
           "0%, 100%": { 
-            boxShadow: "0 0 20px hsl(var(--lol-gold) / 0.3)",
-            borderColor: "hsl(var(--lol-gold) / 0.5)",
+            boxShadow: "0 0 20px hsl(var(--forge-ember) / 0.3)",
+            borderColor: "hsl(var(--forge-ember) / 0.5)",
           },
           "50%": { 
-            boxShadow: "0 0 30px hsl(var(--lol-gold) / 0.5)",
-            borderColor: "hsl(var(--lol-gold) / 0.8)",
+            boxShadow: "0 0 35px hsl(var(--forge-ember) / 0.5)",
+            borderColor: "hsl(var(--forge-ember) / 0.8)",
           },
         },
-        "border-glow": {
+        "frost-pulse": {
           "0%, 100%": { 
-            borderColor: "hsl(var(--lol-gold-dark))",
+            borderColor: "hsl(var(--frost-dark))",
           },
           "50%": { 
-            borderColor: "hsl(var(--lol-gold))",
+            borderColor: "hsl(var(--frost-blue))",
           },
         },
       },
@@ -122,13 +126,13 @@ const config: Config = {
         shimmer: "shimmer 2s infinite",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         float: "float 3s ease-in-out infinite",
-        glow: "glow 2s ease-in-out infinite",
-        "border-glow": "border-glow 2s ease-in-out infinite",
+        "ember-glow": "ember-glow 2s ease-in-out infinite",
+        "frost-pulse": "frost-pulse 2s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "lol-gradient": "linear-gradient(180deg, hsl(var(--lol-gold-light)) 0%, hsl(var(--lol-gold)) 50%, hsl(var(--lol-gold-dark)) 100%)",
-        "lol-card": "linear-gradient(180deg, hsl(220 35% 12%) 0%, hsl(220 40% 6%) 100%)",
+        "forge-gradient": "linear-gradient(180deg, hsl(var(--forge-flame)) 0%, hsl(var(--forge-ember)) 50%, hsl(var(--forge-gold)) 100%)",
+        "frost-gradient": "linear-gradient(180deg, hsl(var(--frost-light)) 0%, hsl(var(--frost-blue)) 50%, hsl(var(--frost-dark)) 100%)",
       },
     },
   },

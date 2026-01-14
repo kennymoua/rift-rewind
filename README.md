@@ -1,87 +1,65 @@
-# Rift Rewind 🎮✨
+# The Forge 🔨❄️
 
-> Your League of Legends Year in Review — A personalized season recap with AI-powered insights.
+> *"I have done well. This forge... and the things I've made here. That is the only legacy I need."* — Ornn
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?logo=typescript)
-![AWS](https://img.shields.io/badge/AWS-Powered-orange?logo=amazon-aws)
-![License](https://img.shields.io/badge/License-MIT-green)
+**The Forge** is a League of Legends year-in-review application where Ornn, the Fire Below the Mountain, helps you understand and improve your gameplay. Enter Ornn's workshop in the Freljord mountains and let the master craftsman forge insights from your match data.
 
-Built for the **AWS Game Builder Challenge 2024** 🏆
+Built with Next.js, TypeScript, and designed to deploy on AWS.
 
----
+![The Forge Screenshot](./docs/screenshot.png)
 
-## 📖 What is Rift Rewind?
+## ✨ Features
 
-Rift Rewind transforms your League of Legends match history into a beautiful, personalized year-end recap—inspired by Spotify Wrapped. Enter your Riot ID, select your region and season, and get:
+- **Personalized Season Recap** - Enter your Riot ID to generate a comprehensive analysis of your ranked/normal games
+- **Ornn's Wisdom (AI Coach)** - Powered by AWS Bedrock (Claude), receive personalized insights, strengths analysis, and training recommendations
+- **Beautiful Freljord-themed UI** - Ice-blue and ember-orange colors, mountain backgrounds, and forge-inspired design
+- **Champion Comparison** - Compare stats between two players in the "Trial by Combat" mode
+- **Interactive Charts** - Visualize winrate trends, champion pools, and role distribution
+- **Shareable Results** - Download or share your forge report
 
-- 📊 **Comprehensive Stats** — Games played, win rate, KDA, and more
-- 📈 **Trend Analysis** — Win rate over time, champion performance
-- 🏆 **Season Highlights** — Your best plays, biggest comebacks, longest games
-- 🤖 **AI Coach Insights** — Personalized strengths, weaknesses, and improvement drills powered by Amazon Bedrock
-- 🔄 **Player Comparison** — Compare stats with friends
+## 🏔️ Architecture
 
----
-
-## 🏗️ Architecture
-
-```mermaid
-flowchart TB
-    subgraph Client["Client (Next.js)"]
-        UI[React UI]
-        API[API Routes]
-    end
-    
-    subgraph AWS["AWS Services"]
-        APIGW[API Gateway]
-        Lambda[Lambda Functions]
-        SFN[Step Functions]
-        DDB[(DynamoDB)]
-        S3[(S3)]
-        Bedrock[Amazon Bedrock]
-    end
-    
-    subgraph External["External"]
-        Riot[Riot API]
-    end
-    
-    UI --> API
-    API --> APIGW
-    APIGW --> Lambda
-    Lambda --> SFN
-    SFN --> Lambda
-    Lambda --> Riot
-    Lambda --> DDB
-    Lambda --> S3
-    Lambda --> Bedrock
 ```
-
-### AWS Services Used
-
-| Service | Purpose |
-|---------|---------|
-| **Amazon Bedrock** | AI-generated narratives and coaching tips (Claude 3 Sonnet) |
-| **AWS Lambda** | Serverless compute for API handlers and processing |
-| **AWS Step Functions** | Orchestrates the multi-step rewind workflow |
-| **Amazon DynamoDB** | Stores job status, results, and cached data |
-| **Amazon S3** | Stores raw match data and generated share cards |
-| **Amazon API Gateway** | Secure, scalable API endpoints |
-
----
+┌─────────────────────────────────────────────────────────────────┐
+│                         The Forge                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────┐     ┌───────────┐     ┌──────────────────────┐   │
+│  │  Next.js │────▶│ API       │────▶│   AWS Backend        │   │
+│  │  Frontend│     │ Routes    │     │                      │   │
+│  └──────────┘     └───────────┘     │  ┌─────────────────┐ │   │
+│                                     │  │  Step Functions │ │   │
+│                                     │  │  (Orchestrator) │ │   │
+│  Features:                          │  └────────┬────────┘ │   │
+│  • Freljord Theme                   │           │          │   │
+│  • Dark/Light Mode                  │  ┌───────▼────────┐ │   │
+│  • Responsive Design                │  │ Lambda Workers │ │   │
+│  • Motion Animations                │  │ • Fetch Matches│ │   │
+│                                     │  │ • Build Stats  │ │   │
+│                                     │  │ • AI Analysis  │ │   │
+│                                     │  └───────┬────────┘ │   │
+│                                     │          │          │   │
+│                                     │  ┌───────▼────────┐ │   │
+│                                     │  │   DynamoDB     │ │   │
+│                                     │  │   + S3 Cache   │ │   │
+│                                     │  └────────────────┘ │   │
+│                                     └──────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18.17+ (20+ recommended for AWS SDK)
 - npm or yarn
-- (Optional) AWS CLI configured for deployment
+- Riot Games API Key (for production)
 
-### Installation
+### Local Development (Mock Mode)
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/rift-rewind.git
+git clone https://github.com/kennymoua/rift-rewind.git
 cd rift-rewind
 
 # Install dependencies
@@ -94,203 +72,142 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+The app runs in **mock mode** by default, returning sample data instantly—no API keys needed!
 
 ### Environment Variables
 
-The app runs in **mock mode** by default—no AWS or Riot API keys needed for demo.
-
 ```env
-# Enable mock mode (default: true)
-NEXT_PUBLIC_MOCK_MODE=true
+# Feature flags
+NEXT_PUBLIC_MOCK_MODE=true          # Enable mock data (default: true)
 
-# For production, set to false and configure:
-RIOT_API_KEY=RGAPI-xxx
+# Riot API (required for production)
+RIOT_API_KEY=RGAPI-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+
+# AWS (required for production)
 AWS_REGION=us-east-1
-DDB_TABLE_NAME=rift-rewind-jobs
-S3_BUCKET_NAME=rift-rewind-data
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+DYNAMODB_TABLE_JOBS=forge-jobs
+S3_BUCKET_RESULTS=forge-results
 STEP_FUNCTION_ARN=arn:aws:states:...
-BEDROCK_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
 ```
 
-See [.env.example](.env.example) for all configuration options.
-
----
-
-## 🧪 Testing Instructions (For Judges)
-
-### Demo Mode (No Setup Required)
-
-1. Run `npm install && npm run dev`
-2. Open http://localhost:3000
-3. Enter any Riot ID (e.g., "Faker" / "KR1")
-4. Select region and year
-5. Click "Generate My Rewind"
-6. Watch the progress stepper animate through stages
-7. Explore the full dashboard with stats, charts, and AI insights
-
-### What to Look For
-
-- ✅ **Responsive design** — Works on mobile and desktop
-- ✅ **Dark/light mode** — Toggle in navbar
-- ✅ **Progress feedback** — Real-time stepper during generation
-- ✅ **Rich visualizations** — Charts, highlights carousel
-- ✅ **AI integration** — Personalized narrative and coaching
-- ✅ **Compare feature** — Side-by-side player comparison
-
-### Available Scripts
-
-```bash
-npm run dev        # Start development server
-npm run build      # Build for production
-npm run start      # Start production server
-npm run lint       # Run ESLint
-npm run typecheck  # Run TypeScript compiler check
-```
-
----
-
-## 📁 Project Structure
+## 🛠️ Project Structure
 
 ```
 rift-rewind/
-├── app/                    # Next.js App Router
-│   ├── api/               # API route handlers
-│   │   ├── rewind/        # Rewind endpoints
-│   │   └── compare/       # Compare endpoints
-│   ├── rewind/[jobId]/    # Rewind result page
-│   ├── compare/           # Compare pages
-│   ├── about/             # About page
-│   └── page.tsx           # Landing page
-├── components/            # React components
-│   ├── ui/               # shadcn/ui base components
-│   ├── layout/           # Layout components
-│   └── charts/           # Chart components
-├── hooks/                 # Custom React hooks
-├── lib/                   # Shared utilities
-│   ├── services/         # Service layer
-│   │   ├── interfaces.ts # Service interfaces
-│   │   ├── mock/         # Mock implementations
-│   │   └── aws/          # AWS implementations
-│   ├── types/            # TypeScript types
-│   ├── validations/      # Zod schemas
-│   ├── fixtures/         # Sample data
-│   └── utils.ts          # Utility functions
-└── docs/                  # Documentation
+├── app/                        # Next.js App Router
+│   ├── api/                    # API Route Handlers
+│   │   ├── rewind/             # Forge report endpoints
+│   │   └── compare/            # Comparison endpoints
+│   ├── rewind/[jobId]/         # Results dashboard
+│   ├── compare/                # Comparison pages
+│   └── about/                  # Methodology page
+├── components/
+│   ├── layout/                 # Navbar, Footer, Theme
+│   ├── charts/                 # Recharts visualizations
+│   └── ui/                     # shadcn/ui components
+├── lib/
+│   ├── services/               # Backend service layer
+│   │   ├── interfaces.ts       # Service contracts
+│   │   ├── mock/               # Mock implementations
+│   │   └── aws/                # AWS implementations
+│   ├── types/                  # TypeScript definitions
+│   └── validations/            # Zod schemas
+├── hooks/                      # Custom React hooks
+└── docs/                       # Documentation
 ```
 
----
+## 🎨 Theme - Freljord Design System
 
-## 📊 Insights Computed
+The UI draws inspiration from Ornn and the Freljord region:
 
-### Stats
-- Games played, wins, losses, win rate
-- Total and average KDA
-- Longest win/loss streaks
-- Most played role
+| Color | Variable | Usage |
+|-------|----------|-------|
+| Ember Orange | `--forge-ember` | Primary actions, Ornn's fire |
+| Frost Blue | `--frost-blue` | Accents, victories, ice |
+| Mountain Dark | `--mountain-dark` | Backgrounds |
+| Forge Gold | `--forge-gold` | Highlights, achievements |
+| Snow White | `--snow-white` | Text, light mode |
 
-### Champion Analysis
-- Top 5 champions by games played
-- Per-champion win rate, KDA, CS, damage
-- Role distribution breakdown
+## 📊 Stats Computed
 
-### Trends
-- Win rate by month
-- Performance over time
+The Forge calculates these insights from your match data:
 
-### Highlights
-- Best match (highest KDA win)
-- Worst match (lowest KDA)
-- Longest game
-- Biggest comeback (high participation + win after deaths)
+- **Core Stats**: Games played, wins/losses, winrate
+- **Performance**: KDA, CS/min, vision score trends
+- **Champion Pool**: Top 10 most-played, winrates per champion
+- **Role Distribution**: Games and winrate by position
+- **Highlights**: Best match, worst match, biggest comeback
+- **Streaks**: Longest winning/losing streak
+- **Habits**: Vision score rating, objective participation
 
-### AI-Generated
-- 6-10 sentence personalized narrative
-- 3 strengths with descriptions
-- 2 areas for improvement
-- 3 actionable practice drills
-- 2 champion recommendations
+## 🤖 AI Coach (Ornn's Wisdom)
 
----
+Using AWS Bedrock (Claude), The Forge generates:
 
-## 🤖 AI Integration (Amazon Bedrock)
+- **Narrative Summary** - Your season in Ornn's words
+- **3 Strengths** - What you've forged well
+- **2 Areas to Improve** - Where to apply more heat
+- **3 Training Drills** - Specific exercises to improve
+- **Champion Recommendations** - New champions to try
 
-The AI Coach feature uses Amazon Bedrock (Claude 3 Sonnet) to generate:
+## 🔧 AWS Integration
 
-1. **Narrative Summary** — A personalized story about the player's season
-2. **Strengths** — What the player excels at based on their stats
-3. **Weaknesses** — Areas with room for improvement
-4. **Drills** — Actionable practice recommendations
-5. **Champion Recommendations** — New champions to try based on playstyle
+See [docs/aws-integration.md](./docs/aws-integration.md) for detailed setup:
 
-### Prompt Engineering
+1. **DynamoDB** - Job status tracking
+2. **S3** - Result caching
+3. **Step Functions** - Pipeline orchestration
+4. **Lambda** - Serverless compute
+5. **Bedrock** - AI analysis
+6. **Secrets Manager** - API key storage
 
-The prompt is optimized for:
-- **Token efficiency** — Summarized stats instead of raw data
-- **Structured output** — JSON format for reliable parsing
-- **Context relevance** — Role-specific recommendations
+## 📝 Scripts
 
-See [/docs/methodology.md](docs/methodology.md) for details.
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run typecheck    # Run TypeScript checks
+```
 
----
+## 🧪 Testing
 
-## 💰 Cost Controls
+```bash
+# Run type checks
+npm run typecheck
 
-To keep AWS costs minimal:
+# Run linter
+npm run lint
 
-1. **Caching** — Results cached in DynamoDB with 7-day TTL
-2. **Match Limits** — Fetch top 100 matches per request
-3. **Summarized Prompts** — ~500 input tokens per Bedrock call
-4. **Token Limits** — max_tokens: 2000 prevents runaway responses
-5. **Estimated Cost** — ~$0.01-0.02 per rewind generation
+# Test mock mode locally
+# 1. Start dev server
+# 2. Enter any Riot ID
+# 3. Verify mock data loads
+```
 
----
+## 🔐 Security
 
-## 🔒 Security
+- No account credentials required—only public match data via Riot API
+- API keys stored in AWS Secrets Manager (production)
+- Environment variables never committed
+- Results cached temporarily and auto-expire
 
-- ✅ No secrets in client code (RIOT_API_KEY is server-only)
-- ✅ Environment variables for all configuration
-- ✅ CORS configured for API routes
-- ✅ Input validation with Zod schemas
-- ✅ Rate limiting approach documented
-
-See [/docs/security.md](docs/security.md) for details.
-
----
-
-## 📚 Documentation
-
-- [Methodology](docs/methodology.md) — How insights are computed
-- [AWS Integration](docs/aws-integration.md) — AWS setup guide
-- [Security](docs/security.md) — Security considerations
-
----
-
-## 🛣️ Roadmap
-
-- [ ] Real AWS deployment with IaC (CDK/SAM)
-- [ ] Share card image generation (Canvas API + S3)
-- [ ] Social auth (Sign in with Riot)
-- [ ] Historical comparison (compare across seasons)
-- [ ] Mobile app (React Native)
-
----
-
-## 🙏 Acknowledgments
-
-- [Riot Games API](https://developer.riotgames.com/) for match data
-- [shadcn/ui](https://ui.shadcn.com/) for beautiful components
-- [AWS](https://aws.amazon.com/) for scalable infrastructure
-
----
+See [docs/security.md](./docs/security.md) for details.
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
-
----
+MIT License - see [LICENSE](./LICENSE)
 
 ## ⚠️ Disclaimer
 
-Rift Rewind isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+The Forge isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
 
+---
+
+<p align="center">
+  <em>Forged in the mountains of Freljord</em><br/>
+  <strong>🔨 THE FORGE ❄️</strong>
+</p>

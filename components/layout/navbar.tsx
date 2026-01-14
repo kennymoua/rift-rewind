@@ -1,69 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Swords, GitCompare, Info, Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Hammer, Mountain, Flame } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { Button } from "@/components/ui/button";
-import { isCompareEnabled } from "@/lib/constants";
-
-const navigation = [
-  { name: "Home", href: "/" },
-  { name: "Compare", href: "/compare", icon: GitCompare, requiresFeature: "compare" },
-  { name: "About", href: "/about", icon: Info },
-];
 
 export function Navbar() {
-  const pathname = usePathname();
-  const compareEnabled = isCompareEnabled();
-
-  const filteredNav = navigation.filter((item) => {
-    if (item.requiresFeature === "compare" && !compareEnabled) {
-      return false;
-    }
-    return true;
-  });
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-lol-gold/20 bg-lol-darker/95 backdrop-blur supports-[backdrop-filter]:bg-lol-darker/80">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded border border-lol-gold/50 bg-gradient-to-b from-lol-dark to-lol-darker group-hover:border-lol-gold transition-colors">
-              <Swords className="h-5 w-5 text-lol-gold" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-display text-lg font-bold">
-                <span className="text-lol-gold">RIFT</span>{" "}
-                <span className="text-foreground">REWIND</span>
-              </span>
-            </div>
+    <header className="sticky top-0 z-50 w-full border-b border-frost-dark/30 bg-mountain-dark/95 backdrop-blur supports-[backdrop-filter]:bg-mountain-dark/80">
+      <div className="container flex h-16 items-center">
+        <Link href="/" className="flex items-center gap-3 mr-6 group">
+          {/* Forge icon */}
+          <div className="relative flex h-9 w-9 items-center justify-center rounded border border-forge-ember/50 bg-gradient-to-b from-mountain-stone to-mountain-dark group-hover:border-forge-ember transition-colors">
+            <Hammer className="h-5 w-5 text-forge-ember" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-display font-bold tracking-wide leading-none">
+              <span className="text-forge-ember">THE</span>{" "}
+              <span className="text-frost-light">FORGE</span>
+            </span>
+            <span className="text-[10px] text-frost-blue/70 tracking-widest uppercase">
+              Freljord
+            </span>
+          </div>
+        </Link>
+
+        <nav className="hidden md:flex items-center gap-6 ml-6">
+          <Link
+            href="/compare"
+            className="text-sm font-medium text-muted-foreground hover:text-frost-light transition-colors flex items-center gap-1.5"
+          >
+            <Flame className="h-3.5 w-3.5 text-forge-ember" />
+            Compare
           </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium text-muted-foreground hover:text-frost-light transition-colors flex items-center gap-1.5"
+          >
+            <Mountain className="h-3.5 w-3.5 text-frost-blue" />
+            About
+          </Link>
+        </nav>
 
-          <nav className="hidden md:flex items-center">
-            <div className="flex items-center border-l border-lol-gold/20 pl-6">
-              {filteredNav.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "text-sm font-medium uppercase tracking-wide transition-colors px-4",
-                      pathname === item.href
-                        ? "text-lol-gold bg-lol-gold/10"
-                        : "text-muted-foreground hover:text-lol-gold hover:bg-lol-gold/5"
-                    )}
-                  >
-                    {item.icon && <item.icon className="mr-1.5 h-4 w-4" />}
-                    {item.name}
-                  </Button>
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </div>
-
-        <div className="flex items-center gap-2">
+        <div className="flex flex-1 items-center justify-end gap-4">
           <ThemeToggle />
         </div>
       </div>

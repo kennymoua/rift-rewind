@@ -1,177 +1,163 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Target, AlertTriangle, Dumbbell, Users } from "lucide-react";
-import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
+import { Hammer, TrendingUp, TrendingDown, Target, Sparkles, Flame, Mountain } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn, getChampionIconUrl } from "@/lib/utils";
 import type { AICoachContent } from "@/lib/types";
 
 interface AICoachCardProps {
-  content: AICoachContent;
-  delay?: number;
+  coachOutput: AICoachContent;
 }
 
-export function AICoachCard({ content, delay = 0 }: AICoachCardProps) {
+export function AICoachCard({ coachOutput }: AICoachCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      transition={{ duration: 0.5 }}
+      className="forge-card relative rounded-lg p-6 overflow-hidden"
     >
-      <div className="lol-card rounded-lg overflow-hidden border-2 border-lol-blue/30">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-lol-blue/20 via-lol-magic/10 to-lol-blue/20 p-4 border-b border-lol-blue/20">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded border border-lol-blue/50 bg-lol-darker">
-              <Sparkles className="h-5 w-5 text-lol-blue-glow" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-lol-blue-glow uppercase tracking-wide">
-                AI Coach Insights
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                Powered by Amazon Bedrock
-              </p>
-            </div>
+      {/* Background accent */}
+      <div className="absolute top-0 right-0 w-48 h-48 bg-forge-ember/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-32 h-32 bg-frost-blue/5 rounded-full blur-2xl" />
+
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6 relative z-10">
+        <div className="relative">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg border-2 border-forge-ember/60 bg-gradient-to-b from-mountain-stone to-mountain-dark">
+            <Hammer className="h-6 w-6 text-forge-ember" />
           </div>
+          <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-forge-flame animate-pulse" />
         </div>
-
-        <div className="p-5">
-          {/* Narrative */}
-          <div className="mb-5">
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {content.narrative}
-            </p>
-          </div>
-
-          <Separator className="mb-5 bg-lol-gold/20" />
-
-          {/* Tabs */}
-          <Tabs defaultValue="strengths" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-4 bg-lol-darker border border-lol-gold/20">
-              <TabsTrigger 
-                value="strengths" 
-                className="text-xs data-[state=active]:bg-lol-gold/20 data-[state=active]:text-lol-gold"
-              >
-                <Target className="h-3 w-3 mr-1" />
-                Strengths
-              </TabsTrigger>
-              <TabsTrigger 
-                value="weaknesses" 
-                className="text-xs data-[state=active]:bg-lol-gold/20 data-[state=active]:text-lol-gold"
-              >
-                <AlertTriangle className="h-3 w-3 mr-1" />
-                Improve
-              </TabsTrigger>
-              <TabsTrigger 
-                value="drills" 
-                className="text-xs data-[state=active]:bg-lol-gold/20 data-[state=active]:text-lol-gold"
-              >
-                <Dumbbell className="h-3 w-3 mr-1" />
-                Drills
-              </TabsTrigger>
-              <TabsTrigger 
-                value="champs" 
-                className="text-xs data-[state=active]:bg-lol-gold/20 data-[state=active]:text-lol-gold"
-              >
-                <Users className="h-3 w-3 mr-1" />
-                Try Next
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="strengths" className="space-y-3">
-              {content.strengths.map((strength, index) => (
-                <div
-                  key={index}
-                  className="rounded border border-emerald-500/30 bg-emerald-500/5 p-3"
-                >
-                  <h4 className="font-medium text-sm text-emerald-400 mb-1">
-                    {strength.title}
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    {strength.description}
-                  </p>
-                </div>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="weaknesses" className="space-y-3">
-              {content.weaknesses.map((weakness, index) => (
-                <div
-                  key={index}
-                  className="rounded border border-amber-500/30 bg-amber-500/5 p-3"
-                >
-                  <h4 className="font-medium text-sm text-amber-400 mb-1">
-                    {weakness.title}
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    {weakness.description}
-                  </p>
-                </div>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="drills" className="space-y-3">
-              {content.drills.map((drill, index) => (
-                <div
-                  key={index}
-                  className="rounded border border-lol-blue/30 bg-lol-blue/5 p-3"
-                >
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-medium text-sm text-lol-blue-glow">
-                      {drill.title}
-                    </h4>
-                    <span
-                      className={cn(
-                        "text-xs px-2 py-0.5 rounded font-medium",
-                        drill.difficulty === "Easy" &&
-                          "bg-emerald-500/20 text-emerald-400",
-                        drill.difficulty === "Medium" &&
-                          "bg-amber-500/20 text-amber-400",
-                        drill.difficulty === "Hard" &&
-                          "bg-red-500/20 text-red-400"
-                      )}
-                    >
-                      {drill.difficulty}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {drill.description}
-                  </p>
-                </div>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="champs" className="space-y-3">
-              {content.championRecommendations.map((rec, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 rounded border border-lol-gold/20 bg-lol-darker p-3"
-                >
-                  <div className="relative h-12 w-12 shrink-0 rounded border border-lol-gold/50 overflow-hidden">
-                    <Image
-                      src={getChampionIconUrl(rec.championName)}
-                      alt={rec.championName}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-sm text-lol-gold">
-                      {rec.championName}
-                    </h4>
-                    <p className="text-xs text-muted-foreground">
-                      {rec.reason}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </TabsContent>
-          </Tabs>
+        <div>
+          <h3 className="text-lg font-bold text-forge-ember">Ornn's Wisdom</h3>
+          <p className="text-xs text-frost-blue/70 uppercase tracking-wider flex items-center gap-1">
+            <Mountain className="h-3 w-3" />
+            Forged Insights
+          </p>
         </div>
       </div>
+
+      {/* Narrative */}
+      <div className="mb-6 relative z-10">
+        <div className="rounded-lg border border-frost-dark/50 bg-mountain-dark/50 p-4">
+          <p className="text-sm text-muted-foreground leading-relaxed italic">
+            "{coachOutput.narrative}"
+          </p>
+          <p className="text-xs text-forge-ember/70 mt-2">— The Fire Below the Mountain</p>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <Tabs defaultValue="strengths" className="relative z-10">
+        <TabsList className="w-full bg-mountain-dark border border-frost-dark/30">
+          <TabsTrigger 
+            value="strengths" 
+            className="flex-1 data-[state=active]:bg-frost-blue/20 data-[state=active]:text-frost-light"
+          >
+            <TrendingUp className="h-3.5 w-3.5 mr-1.5" />
+            Strengths
+          </TabsTrigger>
+          <TabsTrigger 
+            value="weaknesses" 
+            className="flex-1 data-[state=active]:bg-forge-ember/20 data-[state=active]:text-forge-ember"
+          >
+            <TrendingDown className="h-3.5 w-3.5 mr-1.5" />
+            Areas to Forge
+          </TabsTrigger>
+          <TabsTrigger 
+            value="drills" 
+            className="flex-1 data-[state=active]:bg-frost-blue/20 data-[state=active]:text-frost-light"
+          >
+            <Target className="h-3.5 w-3.5 mr-1.5" />
+            Training
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="strengths" className="mt-4 space-y-2">
+          {coachOutput.strengths.map((strength, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="flex items-start gap-3 rounded-lg border border-frost-blue/30 bg-frost-blue/5 p-3"
+            >
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-frost-blue/20 border border-frost-blue/50">
+                <TrendingUp className="h-3 w-3 text-frost-light" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-frost-light">{strength.title}</p>
+                <p className="text-xs text-muted-foreground">{strength.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </TabsContent>
+
+        <TabsContent value="weaknesses" className="mt-4 space-y-2">
+          {coachOutput.weaknesses.map((weakness, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="flex items-start gap-3 rounded-lg border border-forge-ember/30 bg-forge-ember/5 p-3"
+            >
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-forge-ember/20 border border-forge-ember/50">
+                <Flame className="h-3 w-3 text-forge-ember" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">{weakness.title}</p>
+                <p className="text-xs text-muted-foreground">{weakness.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </TabsContent>
+
+        <TabsContent value="drills" className="mt-4 space-y-2">
+          {coachOutput.drills.map((drill, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+              className="flex items-start gap-3 rounded-lg border border-frost-dark/50 bg-mountain-dark/50 p-3"
+            >
+              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-frost-blue/10 border border-frost-dark text-frost-blue font-bold text-xs">
+                {index + 1}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">{drill.title}</p>
+                <p className="text-xs text-muted-foreground">{drill.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </TabsContent>
+      </Tabs>
+
+      {/* Recommended champions */}
+      {coachOutput.championRecommendations.length > 0 && (
+        <div className="mt-6 relative z-10">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="h-4 w-4 text-forge-gold" />
+            <h4 className="text-sm font-semibold text-frost-light">
+              Champions to Forge Next
+            </h4>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {coachOutput.championRecommendations.map((champ, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-forge-ember/40 bg-forge-ember/10 px-3 py-1.5 text-sm font-medium text-forge-ember hover:bg-forge-ember/20 transition-colors"
+                title={champ.reason}
+              >
+                <Hammer className="h-3 w-3" />
+                {champ.championName}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
