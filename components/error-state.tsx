@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import { AlertTriangle, RefreshCw, Home, Swords } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 interface ErrorStateProps {
   title?: string;
@@ -27,33 +26,38 @@ export function ErrorState({
       animate={{ opacity: 1, scale: 1 }}
       className="flex min-h-[400px] items-center justify-center p-4"
     >
-      <Card className="w-full max-w-md border-destructive/50">
-        <CardContent className="pt-6">
-          <div className="flex flex-col items-center text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 mb-4">
-              <AlertTriangle className="h-8 w-8 text-destructive" />
-            </div>
-            <h2 className="text-xl font-semibold mb-2">{title}</h2>
-            <p className="text-sm text-muted-foreground">{message}</p>
+      <div className="lol-card rounded-lg border-red-500/30 w-full max-w-md p-6">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded border-2 border-red-500/50 bg-red-500/10 mb-4">
+            <AlertTriangle className="h-8 w-8 text-red-400" />
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-center gap-3 pb-6">
-          {showRetry && onRetry && (
-            <Button onClick={onRetry} variant="outline">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Try Again
-            </Button>
-          )}
-          {showHome && (
-            <Link href="/">
-              <Button variant="ghost">
-                <Home className="mr-2 h-4 w-4" />
-                Go Home
+          <h2 className="text-xl font-semibold text-red-400 mb-2">{title}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{message}</p>
+          <div className="flex gap-3">
+            {showRetry && onRetry && (
+              <Button 
+                onClick={onRetry} 
+                variant="outline"
+                className="border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Try Again
               </Button>
-            </Link>
-          )}
-        </CardFooter>
-      </Card>
+            )}
+            {showHome && (
+              <Link href="/">
+                <Button 
+                  variant="ghost"
+                  className="hover:bg-lol-gold/10 hover:text-lol-gold"
+                >
+                  <Home className="mr-2 h-4 w-4" />
+                  Go Home
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -66,12 +70,26 @@ export function NotFoundState({
   message?: string;
 }) {
   return (
-    <ErrorState
-      title={title}
-      message={message}
-      showRetry={false}
-      showHome={true}
-    />
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="flex min-h-[400px] items-center justify-center p-4"
+    >
+      <div className="lol-card rounded-lg w-full max-w-md p-6">
+        <div className="flex flex-col items-center text-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded border-2 border-lol-gold/30 bg-lol-darker mb-4">
+            <Swords className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h2 className="text-xl font-semibold text-lol-gold mb-2">{title}</h2>
+          <p className="text-sm text-muted-foreground mb-6">{message}</p>
+          <Link href="/">
+            <Button className="lol-button">
+              <Home className="mr-2 h-4 w-4" />
+              Return Home
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 }
-

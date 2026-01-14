@@ -9,8 +9,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Area,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { WinrateDataPoint } from "@/lib/types";
 
 interface LineChartCardProps {
@@ -33,44 +33,46 @@ export function LineChartCard({ title, data, delay = 0 }: LineChartCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
     >
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">{title}</CardTitle>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <div className="h-[250px] w-full">
+      <div className="lol-card rounded-lg overflow-hidden">
+        <div className="p-4 border-b border-lol-gold/20">
+          <h3 className="text-sm font-semibold text-lol-gold uppercase tracking-wide">
+            {title}
+          </h3>
+        </div>
+        <div className="p-4">
+          <div className="h-[220px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={chartData}
-                margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
+                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
               >
                 <defs>
                   <linearGradient id="colorWinrate" x1="0" y1="0" x2="0" y2="1">
                     <stop
                       offset="5%"
-                      stopColor="hsl(var(--rift-cyan))"
-                      stopOpacity={0.4}
+                      stopColor="#c8aa6e"
+                      stopOpacity={0.3}
                     />
                     <stop
                       offset="95%"
-                      stopColor="hsl(var(--rift-cyan))"
+                      stopColor="#c8aa6e"
                       stopOpacity={0}
                     />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="hsl(var(--border))"
+                  stroke="rgba(200, 170, 110, 0.1)"
                   vertical={false}
                 />
                 <XAxis
                   dataKey="name"
-                  tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
-                  axisLine={{ stroke: "hsl(var(--border))" }}
+                  tick={{ fontSize: 11, fill: "rgba(200, 170, 110, 0.6)" }}
+                  axisLine={{ stroke: "rgba(200, 170, 110, 0.2)" }}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }}
+                  tick={{ fontSize: 11, fill: "rgba(200, 170, 110, 0.6)" }}
                   axisLine={false}
                   tickLine={false}
                   domain={[0, 100]}
@@ -78,41 +80,46 @@ export function LineChartCard({ title, data, delay = 0 }: LineChartCardProps) {
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
+                    backgroundColor: "hsl(220 40% 8%)",
+                    border: "1px solid rgba(200, 170, 110, 0.3)",
+                    borderRadius: "4px",
                     fontSize: "12px",
                   }}
-                  formatter={(value: number, name: string) => [
+                  formatter={(value: number) => [
                     `${value}%`,
-                    name === "winrate" ? "Win Rate" : name,
+                    "Win Rate",
                   ]}
-                  labelStyle={{ color: "hsl(var(--foreground))" }}
+                  labelStyle={{ color: "#c8aa6e" }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="winrate"
+                  stroke="#c8aa6e"
+                  fill="url(#colorWinrate)"
+                  strokeWidth={0}
                 />
                 <Line
                   type="monotone"
                   dataKey="winrate"
-                  stroke="hsl(var(--rift-cyan))"
+                  stroke="#c8aa6e"
                   strokeWidth={2}
                   dot={{
-                    fill: "hsl(var(--rift-cyan))",
+                    fill: "#c8aa6e",
                     strokeWidth: 0,
-                    r: 4,
+                    r: 3,
                   }}
                   activeDot={{
-                    r: 6,
-                    fill: "hsl(var(--rift-cyan))",
-                    stroke: "hsl(var(--background))",
+                    r: 5,
+                    fill: "#c8aa6e",
+                    stroke: "hsl(220 40% 8%)",
                     strokeWidth: 2,
                   }}
-                  fill="url(#colorWinrate)"
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
-

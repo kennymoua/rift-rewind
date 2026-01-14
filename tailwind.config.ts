@@ -51,12 +51,18 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom Rift Rewind colors
-        rift: {
-          gold: "hsl(var(--rift-gold))",
-          cyan: "hsl(var(--rift-cyan))",
-          purple: "hsl(var(--rift-purple))",
-          emerald: "hsl(var(--rift-emerald))",
+        // LoL Brand Colors
+        lol: {
+          gold: "hsl(var(--lol-gold))",
+          "gold-light": "hsl(var(--lol-gold-light))",
+          "gold-dark": "hsl(var(--lol-gold-dark))",
+          blue: "hsl(var(--lol-blue))",
+          "blue-dark": "hsl(var(--lol-blue-dark))",
+          "blue-glow": "hsl(var(--lol-blue-glow))",
+          bronze: "hsl(var(--lol-bronze))",
+          dark: "hsl(var(--lol-dark))",
+          darker: "hsl(var(--lol-darker))",
+          magic: "hsl(var(--lol-magic))",
         },
       },
       borderRadius: {
@@ -92,8 +98,22 @@ const config: Config = {
           "50%": { transform: "translateY(-10px)" },
         },
         glow: {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(0, 212, 255, 0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(0, 212, 255, 0.6)" },
+          "0%, 100%": { 
+            boxShadow: "0 0 20px hsl(var(--lol-gold) / 0.3)",
+            borderColor: "hsl(var(--lol-gold) / 0.5)",
+          },
+          "50%": { 
+            boxShadow: "0 0 30px hsl(var(--lol-gold) / 0.5)",
+            borderColor: "hsl(var(--lol-gold) / 0.8)",
+          },
+        },
+        "border-glow": {
+          "0%, 100%": { 
+            borderColor: "hsl(var(--lol-gold-dark))",
+          },
+          "50%": { 
+            borderColor: "hsl(var(--lol-gold))",
+          },
         },
       },
       animation: {
@@ -103,13 +123,12 @@ const config: Config = {
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         float: "float 3s ease-in-out infinite",
         glow: "glow 2s ease-in-out infinite",
+        "border-glow": "border-glow 2s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "rift-gradient":
-          "linear-gradient(135deg, hsl(var(--rift-purple)) 0%, hsl(var(--rift-cyan)) 50%, hsl(var(--rift-gold)) 100%)",
-        "rift-mesh":
-          "radial-gradient(at 40% 20%, hsl(var(--rift-purple) / 0.3) 0px, transparent 50%), radial-gradient(at 80% 0%, hsl(var(--rift-cyan) / 0.2) 0px, transparent 50%), radial-gradient(at 0% 50%, hsl(var(--rift-gold) / 0.15) 0px, transparent 50%)",
+        "lol-gradient": "linear-gradient(180deg, hsl(var(--lol-gold-light)) 0%, hsl(var(--lol-gold)) 50%, hsl(var(--lol-gold-dark)) 100%)",
+        "lol-card": "linear-gradient(180deg, hsl(220 35% 12%) 0%, hsl(220 40% 6%) 100%)",
       },
     },
   },
@@ -117,4 +136,3 @@ const config: Config = {
 };
 
 export default config;
-

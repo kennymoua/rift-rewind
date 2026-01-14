@@ -6,7 +6,6 @@ import { ChevronLeft, ChevronRight, Trophy, Skull, Clock, TrendingUp } from "luc
 import Image from "next/image";
 import { cn, getChampionIconUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import type { MatchHighlight } from "@/lib/types";
 
 interface HighlightsCarouselProps {
@@ -21,10 +20,10 @@ const highlightIcons = {
 };
 
 const highlightColors = {
-  best_match: "from-amber-500/20 to-yellow-500/20 border-amber-500/50",
-  worst_match: "from-red-500/20 to-rose-500/20 border-red-500/50",
-  longest_game: "from-blue-500/20 to-cyan-500/20 border-blue-500/50",
-  biggest_comeback: "from-emerald-500/20 to-green-500/20 border-emerald-500/50",
+  best_match: "border-lol-gold bg-lol-gold/10",
+  worst_match: "border-red-500/50 bg-red-500/10",
+  longest_game: "border-lol-blue/50 bg-lol-blue/10",
+  biggest_comeback: "border-emerald-500/50 bg-emerald-500/10",
 };
 
 export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
@@ -52,13 +51,19 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
 
   return (
     <div className="w-full">
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Season Highlights</h3>
+        <div className="flex items-center gap-3">
+          <div className="h-[1px] w-8 bg-gradient-to-r from-lol-gold to-transparent" />
+          <h3 className="text-lg font-semibold text-lol-gold uppercase tracking-wide">
+            Season Highlights
+          </h3>
+        </div>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
             onClick={goToPrevious}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -69,7 +74,7 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 border-lol-gold/30 hover:border-lol-gold hover:bg-lol-gold/10"
             onClick={goToNext}
           >
             <ChevronRight className="h-4 w-4" />
@@ -86,58 +91,58 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className={cn("border-2 bg-gradient-to-br", colorClass)}>
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  {/* Champion icon */}
-                  <div className="relative h-20 w-20 shrink-0 rounded-lg overflow-hidden border-2 border-background shadow-lg">
-                    <Image
-                      src={getChampionIconUrl(current.championName)}
-                      alt={current.championName}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+            <div className={cn("lol-card rounded-lg border-2 p-6", colorClass)}>
+              <div className="flex items-start gap-4">
+                {/* Champion icon */}
+                <div className="relative h-20 w-20 shrink-0 rounded border-2 border-lol-gold/50 overflow-hidden champion-frame">
+                  <Image
+                    src={getChampionIconUrl(current.championName)}
+                    alt={current.championName}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-background">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <h4 className="font-semibold text-lg">{current.title}</h4>
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded border border-lol-gold/30 bg-lol-darker">
+                      <Icon className="h-4 w-4 text-lol-gold" />
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {current.description}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      <div className="flex items-center gap-1.5 text-sm">
-                        <span className="font-mono font-semibold">
-                          {current.stats.kda}
-                        </span>
-                        <span className="text-muted-foreground">KDA</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-sm">
-                        <span className="font-mono font-semibold">
-                          {current.stats.duration}
-                        </span>
-                        <span className="text-muted-foreground">Duration</span>
-                      </div>
-                      <div
-                        className={cn(
-                          "px-2 py-0.5 rounded-full text-xs font-medium",
-                          current.stats.result === "Victory"
-                            ? "bg-emerald-500/20 text-emerald-500"
-                            : "bg-red-500/20 text-red-500"
-                        )}
-                      >
-                        {current.stats.result}
-                      </div>
+                    <h4 className="font-semibold text-lg text-lol-gold">
+                      {current.title}
+                    </h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    {current.description}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <span className="font-mono font-bold text-foreground">
+                        {current.stats.kda}
+                      </span>
+                      <span className="text-muted-foreground text-xs uppercase">KDA</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <span className="font-mono font-bold text-foreground">
+                        {current.stats.duration}
+                      </span>
+                      <span className="text-muted-foreground text-xs uppercase">Duration</span>
+                    </div>
+                    <div
+                      className={cn(
+                        "px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wide",
+                        current.stats.result === "Victory"
+                          ? "bg-lol-gold/20 text-lol-gold"
+                          : "bg-red-500/20 text-red-400"
+                      )}
+                    >
+                      {current.stats.result}
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -151,8 +156,8 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
             className={cn(
               "h-2 rounded-full transition-all",
               index === currentIndex
-                ? "w-6 bg-rift-cyan"
-                : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                ? "w-6 bg-lol-gold"
+                : "w-2 bg-lol-gold/30 hover:bg-lol-gold/50"
             )}
           />
         ))}
@@ -160,4 +165,3 @@ export function HighlightsCarousel({ highlights }: HighlightsCarouselProps) {
     </div>
   );
 }
-

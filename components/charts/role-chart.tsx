@@ -9,7 +9,6 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { RoleDistribution } from "@/lib/types";
 
 interface RoleChartProps {
@@ -18,12 +17,13 @@ interface RoleChartProps {
   delay?: number;
 }
 
+// LoL-themed colors for roles
 const COLORS = [
-  "hsl(var(--rift-cyan))",
-  "hsl(var(--rift-purple))",
-  "hsl(var(--rift-gold))",
-  "hsl(var(--rift-emerald))",
-  "hsl(var(--muted-foreground))",
+  "#c8aa6e", // Gold - Primary
+  "#0ac8b9", // Hextech cyan
+  "#c89b3c", // Bronze gold
+  "#0397ab", // Teal
+  "#5b5a56", // Silver/gray
 ];
 
 export function RoleChart({ title, data, delay = 0 }: RoleChartProps) {
@@ -39,37 +39,39 @@ export function RoleChart({ title, data, delay = 0 }: RoleChartProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
     >
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">{title}</CardTitle>
-        </CardHeader>
-        <CardContent className="pb-4">
-          <div className="h-[250px] w-full">
+      <div className="lol-card rounded-lg overflow-hidden">
+        <div className="p-4 border-b border-lol-gold/20">
+          <h3 className="text-sm font-semibold text-lol-gold uppercase tracking-wide">
+            {title}
+          </h3>
+        </div>
+        <div className="p-4">
+          <div className="h-[220px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={chartData}
                   cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={80}
-                  paddingAngle={2}
+                  cy="45%"
+                  innerRadius={45}
+                  outerRadius={70}
+                  paddingAngle={3}
                   dataKey="value"
+                  stroke="hsl(220 40% 8%)"
+                  strokeWidth={2}
                 >
                   {chartData.map((_, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
-                      stroke="hsl(var(--background))"
-                      strokeWidth={2}
                     />
                   ))}
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "hsl(var(--card))",
-                    border: "1px solid hsl(var(--border))",
-                    borderRadius: "8px",
+                    backgroundColor: "hsl(220 40% 8%)",
+                    border: "1px solid rgba(200, 170, 110, 0.3)",
+                    borderRadius: "4px",
                     fontSize: "12px",
                   }}
                   formatter={(value: number, name: string, props: unknown) => {
@@ -84,7 +86,7 @@ export function RoleChart({ title, data, delay = 0 }: RoleChartProps) {
                   verticalAlign="bottom"
                   height={36}
                   formatter={(value) => (
-                    <span style={{ color: "hsl(var(--foreground))", fontSize: 12 }}>
+                    <span style={{ color: "rgba(200, 170, 110, 0.8)", fontSize: 11 }}>
                       {value}
                     </span>
                   )}
@@ -92,9 +94,8 @@ export function RoleChart({ title, data, delay = 0 }: RoleChartProps) {
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }
-

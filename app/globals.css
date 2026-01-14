@@ -4,60 +4,74 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
+    /* LoL Light Theme (rarely used, but supported) */
+    --background: 220 20% 97%;
+    --foreground: 220 20% 10%;
+    --card: 220 15% 95%;
+    --card-foreground: 220 20% 10%;
+    --popover: 220 15% 95%;
+    --popover-foreground: 220 20% 10%;
+    --primary: 45 100% 51%;
+    --primary-foreground: 220 20% 10%;
+    --secondary: 220 15% 90%;
+    --secondary-foreground: 220 20% 10%;
+    --muted: 220 15% 90%;
+    --muted-foreground: 220 10% 40%;
+    --accent: 200 100% 50%;
+    --accent-foreground: 220 20% 10%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 262 83% 58%;
-    --radius: 0.75rem;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 45 100% 51%;
+    --radius: 0.5rem;
 
-    /* Rift Rewind custom colors */
-    --rift-gold: 45 93% 58%;
-    --rift-cyan: 187 100% 50%;
-    --rift-purple: 262 83% 58%;
-    --rift-emerald: 160 84% 39%;
+    /* LoL Brand Colors */
+    --lol-gold: 45 100% 51%;
+    --lol-gold-light: 45 100% 65%;
+    --lol-gold-dark: 38 100% 40%;
+    --lol-blue: 200 100% 50%;
+    --lol-blue-dark: 210 100% 30%;
+    --lol-blue-glow: 195 100% 60%;
+    --lol-bronze: 30 60% 40%;
+    --lol-dark: 220 30% 8%;
+    --lol-darker: 220 40% 5%;
+    --lol-magic: 280 80% 60%;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 7%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* LoL Dark Theme (Primary) */
+    --background: 220 40% 5%;
+    --foreground: 45 20% 90%;
+    --card: 220 35% 8%;
+    --card-foreground: 45 20% 90%;
+    --popover: 220 35% 10%;
+    --popover-foreground: 45 20% 90%;
+    --primary: 45 100% 51%;
+    --primary-foreground: 220 40% 5%;
+    --secondary: 220 30% 12%;
+    --secondary-foreground: 45 20% 85%;
+    --muted: 220 30% 15%;
+    --muted-foreground: 220 15% 55%;
+    --accent: 200 100% 50%;
+    --accent-foreground: 220 40% 5%;
+    --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 262 83% 58%;
+    --border: 220 30% 18%;
+    --input: 220 30% 15%;
+    --ring: 45 100% 51%;
 
-    /* Rift Rewind custom colors - same in dark mode */
-    --rift-gold: 45 93% 58%;
-    --rift-cyan: 187 100% 50%;
-    --rift-purple: 262 83% 58%;
-    --rift-emerald: 160 84% 39%;
+    /* LoL Brand Colors - Same */
+    --lol-gold: 45 100% 51%;
+    --lol-gold-light: 45 100% 65%;
+    --lol-gold-dark: 38 100% 40%;
+    --lol-blue: 200 100% 50%;
+    --lol-blue-dark: 210 100% 30%;
+    --lol-blue-glow: 195 100% 60%;
+    --lol-bronze: 30 60% 40%;
+    --lol-dark: 220 30% 8%;
+    --lol-darker: 220 40% 5%;
+    --lol-magic: 280 80% 60%;
   }
 }
 
@@ -77,75 +91,246 @@
   }
 }
 
-/* Custom scrollbar */
+/* LoL-style scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: hsl(var(--lol-darker));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: linear-gradient(
+    180deg,
+    hsl(var(--lol-gold-dark)) 0%,
+    hsl(var(--lol-gold)) 50%,
+    hsl(var(--lol-gold-dark)) 100%
+  );
   border-radius: 4px;
+  border: 1px solid hsl(var(--lol-gold-dark));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(var(--lol-gold-light));
 }
 
-/* Gradient text utility */
-.gradient-text {
-  @apply bg-gradient-to-r from-rift-purple via-rift-cyan to-rift-gold bg-clip-text text-transparent;
+/* LoL Gold gradient text */
+.text-lol-gold {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--lol-gold-light)) 0%,
+    hsl(var(--lol-gold)) 50%,
+    hsl(var(--lol-gold-dark)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Glass effect */
-.glass {
-  @apply backdrop-blur-md bg-background/80 border border-border/50;
+/* LoL Blue glow text */
+.text-lol-blue-glow {
+  color: hsl(var(--lol-blue-glow));
+  text-shadow: 0 0 10px hsl(var(--lol-blue) / 0.5),
+    0 0 20px hsl(var(--lol-blue) / 0.3);
 }
 
-/* Glow effect */
-.glow {
-  box-shadow:
-    0 0 20px -5px hsl(var(--rift-cyan) / 0.3),
-    0 0 40px -10px hsl(var(--rift-purple) / 0.2);
+/* Hextech border effect */
+.hextech-border {
+  position: relative;
+  border: 1px solid hsl(var(--lol-gold-dark) / 0.5);
+  background: linear-gradient(
+    135deg,
+    hsl(var(--lol-dark)) 0%,
+    hsl(var(--lol-darker)) 100%
+  );
 }
 
-/* Animated background mesh */
-.bg-mesh {
-  background-image: radial-gradient(
-      at 40% 20%,
-      hsl(var(--rift-purple) / 0.15) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 80% 0%,
-      hsl(var(--rift-cyan) / 0.1) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 0% 50%,
-      hsl(var(--rift-gold) / 0.08) 0px,
-      transparent 50%
-    ),
-    radial-gradient(
-      at 80% 100%,
-      hsl(var(--rift-purple) / 0.1) 0px,
-      transparent 50%
-    );
+.hextech-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--lol-gold) / 0.6) 0%,
+    hsl(var(--lol-gold-dark) / 0.3) 50%,
+    hsl(var(--lol-gold) / 0.6) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
-/* Pattern background */
-.bg-grid {
-  background-size: 40px 40px;
-  background-image: linear-gradient(
-      to right,
-      hsl(var(--border) / 0.3) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, hsl(var(--border) / 0.3) 1px, transparent 1px);
+/* LoL Card style */
+.lol-card {
+  background: linear-gradient(
+    180deg,
+    hsl(220 35% 12%) 0%,
+    hsl(220 40% 6%) 100%
+  );
+  border: 1px solid hsl(var(--lol-gold-dark) / 0.4);
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--lol-gold) / 0.1),
+    0 4px 20px hsl(220 50% 3% / 0.5);
 }
 
+.lol-card:hover {
+  border-color: hsl(var(--lol-gold) / 0.6);
+  box-shadow: 
+    inset 0 1px 0 hsl(var(--lol-gold) / 0.2),
+    0 4px 30px hsl(var(--lol-gold) / 0.1),
+    0 0 20px hsl(var(--lol-gold) / 0.05);
+}
+
+/* Summoner's Rift inspired background */
+.bg-rift {
+  background: 
+    radial-gradient(ellipse at 50% 0%, hsl(var(--lol-blue) / 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, hsl(var(--lol-magic) / 0.05) 0%, transparent 40%),
+    radial-gradient(ellipse at 20% 60%, hsl(var(--lol-blue-dark) / 0.1) 0%, transparent 40%),
+    linear-gradient(180deg, hsl(var(--lol-darker)) 0%, hsl(var(--lol-dark)) 100%);
+}
+
+/* Hexagonal pattern overlay */
+.bg-hextech {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='none' stroke='%23c8aa6e' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+
+/* Gold glow effect */
+.glow-gold {
+  box-shadow: 
+    0 0 10px hsl(var(--lol-gold) / 0.3),
+    0 0 20px hsl(var(--lol-gold) / 0.2),
+    0 0 30px hsl(var(--lol-gold) / 0.1);
+}
+
+/* Blue glow effect */
+.glow-blue {
+  box-shadow: 
+    0 0 10px hsl(var(--lol-blue) / 0.4),
+    0 0 20px hsl(var(--lol-blue) / 0.3),
+    0 0 30px hsl(var(--lol-blue) / 0.2);
+}
+
+/* LoL Button style */
+.lol-button {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--lol-gold-light)) 0%,
+    hsl(var(--lol-gold)) 50%,
+    hsl(var(--lol-gold-dark)) 100%
+  );
+  color: hsl(var(--lol-darker));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid hsl(var(--lol-gold-light));
+  box-shadow: 
+    inset 0 1px 0 hsl(0 0% 100% / 0.3),
+    0 2px 10px hsl(var(--lol-gold) / 0.3);
+  transition: all 0.2s ease;
+}
+
+.lol-button:hover {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--lol-gold)) 0%,
+    hsl(var(--lol-gold-light)) 50%,
+    hsl(var(--lol-gold)) 100%
+  );
+  box-shadow: 
+    inset 0 1px 0 hsl(0 0% 100% / 0.4),
+    0 4px 20px hsl(var(--lol-gold) / 0.5);
+  transform: translateY(-1px);
+}
+
+.lol-button:active {
+  transform: translateY(0);
+}
+
+/* Rune-like decorative elements */
+.rune-corner::before,
+.rune-corner::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid hsl(var(--lol-gold) / 0.5);
+}
+
+.rune-corner::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.rune-corner::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+/* Champion portrait frame */
+.champion-frame {
+  border: 2px solid hsl(var(--lol-gold));
+  box-shadow: 
+    inset 0 0 10px hsl(var(--lol-gold) / 0.3),
+    0 0 10px hsl(var(--lol-gold) / 0.2);
+}
+
+/* Rank tier colors */
+.tier-iron { color: #5a5a5a; }
+.tier-bronze { color: #a17419; }
+.tier-silver { color: #7b8894; }
+.tier-gold { color: #c8aa6e; }
+.tier-platinum { color: #4a9a8e; }
+.tier-emerald { color: #00a86b; }
+.tier-diamond { color: #576cce; }
+.tier-master { color: #9d48e0; }
+.tier-grandmaster { color: #cd3c3c; }
+.tier-challenger { color: #f4c874; }
+
+/* Animated border shimmer */
+@keyframes border-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.shimmer-border {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--lol-gold-dark)) 0%,
+    hsl(var(--lol-gold-light)) 25%,
+    hsl(var(--lol-gold)) 50%,
+    hsl(var(--lol-gold-light)) 75%,
+    hsl(var(--lol-gold-dark)) 100%
+  );
+  background-size: 200% 100%;
+  animation: border-shimmer 3s ease infinite;
+}
+
+/* Victory/Defeat colors */
+.victory {
+  color: hsl(var(--lol-gold));
+  text-shadow: 0 0 10px hsl(var(--lol-gold) / 0.5);
+}
+
+.defeat {
+  color: #8b0000;
+  text-shadow: 0 0 10px hsl(0 100% 30% / 0.5);
+}

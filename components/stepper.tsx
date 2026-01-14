@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, Swords } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { RewindJobStatus } from "@/lib/types";
 import { REWIND_STEPS } from "@/lib/constants";
@@ -17,11 +17,22 @@ export function Stepper({ status, currentStep }: StepperProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto">
+      {/* Decorative header */}
+      <div className="flex items-center justify-center mb-8">
+        <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-lol-gold/30" />
+        <div className="px-4">
+          <Swords className="h-6 w-6 text-lol-gold" />
+        </div>
+        <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-lol-gold/30" />
+      </div>
+
       <div className="relative">
-        {/* Progress line */}
-        <div className="absolute left-6 top-6 h-[calc(100%-48px)] w-0.5 bg-muted" />
+        {/* Progress line background */}
+        <div className="absolute left-6 top-6 h-[calc(100%-48px)] w-0.5 bg-lol-gold/20" />
+        
+        {/* Progress line filled */}
         <motion.div
-          className="absolute left-6 top-6 w-0.5 bg-gradient-to-b from-rift-purple to-rift-cyan"
+          className="absolute left-6 top-6 w-0.5 bg-gradient-to-b from-lol-gold to-lol-gold-dark"
           initial={{ height: 0 }}
           animate={{
             height: isDone
@@ -50,23 +61,23 @@ export function Stepper({ status, currentStep }: StepperProps) {
                 {/* Step indicator */}
                 <div
                   className={cn(
-                    "relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 transition-all duration-300",
+                    "relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded border-2 transition-all duration-300",
                     isCompleted &&
-                      "border-rift-cyan bg-rift-cyan text-white",
+                      "border-lol-gold bg-lol-gold text-lol-darker",
                     isCurrent &&
-                      "border-rift-purple bg-background animate-pulse",
+                      "border-lol-gold bg-lol-darker animate-border-glow",
                     !isCompleted &&
                       !isCurrent &&
-                      "border-muted bg-background text-muted-foreground",
-                    isFailed && isActive && "border-destructive bg-destructive/10"
+                      "border-lol-gold/30 bg-lol-darker text-muted-foreground",
+                    isFailed && isActive && "border-red-500 bg-red-500/10"
                   )}
                 >
                   {isCompleted ? (
                     <Check className="h-5 w-5" />
                   ) : isCurrent ? (
-                    <Loader2 className="h-5 w-5 animate-spin text-rift-purple" />
+                    <Loader2 className="h-5 w-5 animate-spin text-lol-gold" />
                   ) : (
-                    <span className="text-sm font-medium">{stepNumber}</span>
+                    <span className="text-sm font-bold">{stepNumber}</span>
                   )}
                 </div>
 
@@ -74,16 +85,16 @@ export function Stepper({ status, currentStep }: StepperProps) {
                 <div className="flex-1 pt-2">
                   <h3
                     className={cn(
-                      "font-semibold transition-colors",
-                      isCompleted && "text-foreground",
-                      isCurrent && "text-rift-purple",
+                      "font-semibold uppercase tracking-wide text-sm transition-colors",
+                      isCompleted && "text-lol-gold",
+                      isCurrent && "text-lol-gold",
                       !isCompleted && !isCurrent && "text-muted-foreground"
                     )}
                   >
                     {step.label}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {isCurrent ? step.description : isCompleted ? "Completed" : "Waiting..."}
+                  <p className="text-sm text-muted-foreground mt-0.5">
+                    {isCurrent ? step.description : isCompleted ? "Complete" : "Waiting..."}
                   </p>
                 </div>
               </motion.div>
@@ -94,4 +105,3 @@ export function Stepper({ status, currentStep }: StepperProps) {
     </div>
   );
 }
-
